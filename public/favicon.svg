@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#6c3ff5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08061a"/>
+      <stop offset="100%" stop-color="#0d0824"/>
+    </linearGradient>
+    <linearGradient id="letter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0d8ff"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+
+  <!-- Glow effect -->
+  <circle cx="16" cy="14" r="14" fill="url(#glow)"/>
+
+  <!-- Border -->
+  <rect width="32" height="32" rx="8" fill="none" stroke="rgba(139,130,255,0.4)" stroke-width="1"/>
+
+  <!-- Letter M -->
+  <text
+    x="16"
+    y="22"
+    font-family="Syne, Arial Black, sans-serif"
+    font-size="18"
+    font-weight="900"
+    text-anchor="middle"
+    fill="url(#letter)"
+    filter="url(#blur)"
+  >M</text>
+
+  <!-- Subtle underline arc -->
+  <path d="M 9 25 Q 16 27 23 25" stroke="rgba(139,130,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>
