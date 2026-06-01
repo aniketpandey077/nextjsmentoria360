@@ -19,14 +19,11 @@ const ROLE_COLOR = {
   student:    "#10b981",
 };
 
-function StatCard({ label, value, icon, color }) {
+function StatCard({ label, value }) {
   return (
-    <div className="stat-card" style={{ textAlign: "center" }}>
-      <div style={{ fontSize: 28, marginBottom: 6 }}>{icon}</div>
-      <span className="stat-value" style={{ color: color || "var(--text)", fontSize: 32, display: "block" }}>
-        {value}
-      </span>
+    <div className="stat-card">
       <span className="stat-label">{label}</span>
+      <span className="stat-value">{value}</span>
     </div>
   );
 }
@@ -69,10 +66,10 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
         style={{
           width: "100%", maxWidth: 560,
           maxHeight: "85vh", overflowY: "auto",
-          borderRadius: 20,
+          borderRadius: 8,
           border: "1px solid var(--border)",
-          background: "var(--bg2)",
-          boxShadow: "0 32px 80px rgba(0,0,0,.6)",
+          background: "var(--bg-secondary)",
+          boxShadow: "var(--shadow-sm)",
         }}
         onClick={e => e.stopPropagation()}
       >
@@ -90,8 +87,8 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
             <div>
               <div style={{ fontWeight: 700, fontSize: 18 }}>{coaching.name}</div>
               {mapsUrl
-                ? <a href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "var(--accent2)", textDecoration: "none" }}>📍 {coaching.city} ↗</a>
-                : <span style={{ fontSize: 12, color: "var(--text3)" }}>📍 {coaching.city || "—"}</span>
+                ? <a href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "var(--accent)", textDecoration: "none" }}>{coaching.city} ↗</a>
+                : <span style={{ fontSize: 12, color: "var(--text-tertiary)" }}>{coaching.city || "—"}</span>
               }
             </div>
           </div>
@@ -101,14 +98,13 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
         {/* Key Stats */}
         <div className="grid-3" style={{ marginBottom: 20 }}>
           {[
-            { label: "Students", value: coaching.students?.length || 0, color: "var(--green)", icon: "🎓" },
-            { label: "Subject", value: coaching.subject || "—", color: "var(--text)", icon: "📚" },
-            { label: "Registered", value: createdDate, color: "var(--text2)", icon: "📅" },
+            { label: "Students", value: coaching.students?.length || 0 },
+            { label: "Subject", value: coaching.subject || "—" },
+            { label: "Registered", value: createdDate },
           ].map(s => (
-            <div key={s.label} className="stat-card" style={{ padding: "14px 12px", textAlign: "center" }}>
-              <div style={{ fontSize: 20, marginBottom: 4 }}>{s.icon}</div>
-              <div style={{ fontSize: s.label === "Registered" ? 11 : 22, fontWeight: 700, color: s.color, marginBottom: 2 }}>{s.value}</div>
-              <div style={{ fontSize: 10, color: "var(--text3)", textTransform: "uppercase", letterSpacing: ".06em" }}>{s.label}</div>
+            <div key={s.label} className="stat-card" style={{ padding: "14px 12px" }}>
+              <span className="stat-label">{s.label}</span>
+              <span className="stat-value" style={{ fontSize: s.label === "Registered" ? "0.875rem" : undefined }}>{s.value}</span>
             </div>
           ))}
         </div>
@@ -135,26 +131,19 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
             <div style={{ fontSize: 12, color: "var(--text3)" }}>Admin information not found</div>
           )}
           {coaching.phone && (
-            <div style={{ marginTop: 8, fontSize: 12, color: "var(--text2)" }}>📞 {coaching.phone}</div>
+            <div style={{ marginTop: 8, fontSize: 12, color: "var(--text-secondary)" }}>{coaching.phone}</div>
           )}
         </div>
 
         {/* Explore Visibility Control */}
-        <div className="card" style={{
-          background: visible
-            ? "linear-gradient(135deg, rgba(16,185,129,.08), rgba(16,185,129,.03))"
-            : "linear-gradient(135deg, rgba(239,68,68,.08), rgba(239,68,68,.03))",
-          border: `1px solid ${visible ? "rgba(16,185,129,.22)" : "rgba(239,68,68,.22)"}`,
-          padding: "16px 18px",
-          marginBottom: 0,
-        }}>
+        <div className="card" style={{ padding: "16px 18px", marginBottom: 0 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text)", marginBottom: 4 }}>
-                🔍 Explore Visibility
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", marginBottom: 4 }}>
+                Explore Visibility
               </div>
-              <div style={{ fontSize: 12, color: visible ? "var(--green)" : "var(--red)", fontWeight: 600 }}>
-                {visible ? "🟢 Visible to students" : "🔴 Hidden from search"}
+              <div style={{ fontSize: 12, color: visible ? "var(--success)" : "var(--error)", fontWeight: 500 }}>
+                {visible ? "Visible to students" : "Hidden from search"}
               </div>
               <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 3 }}>
                 {visible ? "Students can discover this institute." : "Not appearing in Explore results."}
@@ -172,7 +161,6 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
                 cursor: toggling ? "not-allowed" : "pointer",
                 transition: "background .3s",
                 flexShrink: 0,
-                boxShadow: visible ? "0 0 12px rgba(16,185,129,.4)" : "none",
               }}
             >
               <div style={{
@@ -239,32 +227,27 @@ export default function SuperAdminDashboard({ active }) {
     return (
       <div className="fade-in">
         <div className="page-header">
-          <h2>🚀 Platform Overview</h2>
+          <h2>Platform Overview</h2>
           <p>Mentoria360 multi-tenant coaching management platform</p>
         </div>
 
         {/* Stats */}
         <div className="stats-grid" style={{ marginBottom: 28 }}>
-          <StatCard label="Total Institutes"  value={coachings.length}      icon="🏫" color="var(--accent2)" />
-          <StatCard label="Total Admins"      value={admins.length}         icon="👨‍💼" color="var(--accent)" />
-          <StatCard label="Total Students"    value={students.length}       icon="👨‍🎓" color="var(--green)" />
-          <StatCard label="Enrolled Students" value={totalStudentsEnrolled} icon="✅"  color="var(--blue)"  />
-          <StatCard label="Pending Approvals" value={pending.length}        icon="⏳"  color="var(--amber)" />
-          <StatCard label="Platform Users"    value={users.length}          icon="👥"  color="var(--text)"  />
-          <StatCard label="Tutors"            value={tutors.length}         icon="👨‍🏫" color="#a78bfa" />
-          <StatCard
-            label="Visible on Explore"
-            value={coachings.filter(c => c.showInExplore !== false).length}
-            icon="🔍"
-            color="var(--green)"
-          />
+          <StatCard label="Total Institutes" value={coachings.length} />
+          <StatCard label="Total Admins" value={admins.length} />
+          <StatCard label="Total Students" value={students.length} />
+          <StatCard label="Enrolled Students" value={totalStudentsEnrolled} />
+          <StatCard label="Pending Approvals" value={pending.length} />
+          <StatCard label="Platform Users" value={users.length} />
+          <StatCard label="Tutors" value={tutors.length} />
+          <StatCard label="Visible on Explore" value={coachings.filter(c => c.showInExplore !== false).length} />
         </div>
 
         {/* Quick Insights */}
         <div className="grid-2" style={{ marginBottom: 20 }}>
           {/* Top institutes by student count */}
           <div className="card">
-            <h3 style={{ fontSize: 14, marginBottom: 16, color: "var(--text2)" }}>🏆 Top Institutes by Students</h3>
+            <h3 style={{ fontSize: "0.875rem", marginBottom: 16, color: "var(--text-secondary)", fontWeight: 600 }}>Top Institutes by Students</h3>
             {[...coachings]
               .sort((a, b) => (b.students?.length || 0) - (a.students?.length || 0))
               .slice(0, 5)
@@ -274,11 +257,11 @@ export default function SuperAdminDashboard({ active }) {
                     <span style={{ fontSize: 12, fontWeight: 700, color: "var(--text3)", minWidth: 20 }}>#{i + 1}</span>
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 600 }}>{c.name}</div>
-                      <div style={{ fontSize: 11, color: "var(--text3)" }}>📍 {c.city || "—"}</div>
+                      <div style={{ fontSize: 11, color: "var(--text-tertiary)" }}>{c.city || "—"}</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "var(--green)" }}>{c.students?.length || 0}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)" }}>{c.students?.length || 0}</span>
                     <span style={{ fontSize: 11, color: "var(--text3)" }}>students</span>
                   </div>
                 </div>
@@ -288,7 +271,7 @@ export default function SuperAdminDashboard({ active }) {
 
           {/* City distribution */}
           <div className="card">
-            <h3 style={{ fontSize: 14, marginBottom: 16, color: "var(--text2)" }}>📍 City Distribution</h3>
+            <h3 style={{ fontSize: "0.875rem", marginBottom: 16, color: "var(--text-secondary)", fontWeight: 600 }}>City Distribution</h3>
             {(() => {
               const cityMap = {};
               coachings.forEach(c => { if (c.city) cityMap[c.city] = (cityMap[c.city] || 0) + 1; });
@@ -304,7 +287,7 @@ export default function SuperAdminDashboard({ active }) {
                     <div style={{
                       height: "100%", borderRadius: 10,
                       width: `${(count / max) * 100}%`,
-                      background: "linear-gradient(90deg, var(--accent), var(--accent2))",
+                      background: "var(--accent)",
                       transition: "width 0.5s",
                     }} />
                   </div>
@@ -317,9 +300,9 @@ export default function SuperAdminDashboard({ active }) {
 
         {/* Recently registered institutes */}
         <div className="card">
-          <h3 style={{ fontSize: 14, marginBottom: 16, color: "var(--text2)" }}>🆕 Recently Registered Institutes</h3>
+          <h3 style={{ fontSize: "0.875rem", marginBottom: 16, color: "var(--text-secondary)", fontWeight: 600 }}>Recently Registered Institutes</h3>
           {recentCoachings.length === 0 && (
-            <div className="empty-state"><div className="emoji">🏫</div><p>No institutes yet</p></div>
+            <div className="empty-state"><p>No institutes yet</p></div>
           )}
           <div className="table-wrap">
           <table className="table-mobile-cards">
@@ -340,10 +323,10 @@ export default function SuperAdminDashboard({ active }) {
                   <td data-label="Focus">
                     {c.subject ? <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 20, background: "var(--accent-bg)", color: "var(--accent)" }}>{c.subject}</span> : "—"}
                   </td>
-                  <td data-label="Students" style={{ fontWeight: 600, color: "var(--green)" }}>{(c.students || []).length}</td>
+                  <td data-label="Students" style={{ fontWeight: 600 }}>{(c.students || []).length}</td>
                   <td data-label="Explore">
-                    <span style={{ fontSize: 11, fontWeight: 700, color: c.showInExplore !== false ? "var(--green)" : "var(--red)" }}>
-                      {c.showInExplore !== false ? "🟢 Visible" : "🔴 Hidden"}
+                    <span style={{ fontSize: 11, fontWeight: 500, color: c.showInExplore !== false ? "var(--success)" : "var(--error)" }}>
+                      {c.showInExplore !== false ? "Visible" : "Hidden"}
                     </span>
                   </td>
                 </tr>
@@ -375,18 +358,18 @@ export default function SuperAdminDashboard({ active }) {
     return (
       <div className="fade-in">
         <div className="page-header">
-          <h2>🏫 All Institutes</h2>
+          <h2>All Institutes</h2>
           <p>{coachings.length} registered coaching institutes · {coachings.filter(c => c.showInExplore !== false).length} visible on Explore</p>
         </div>
 
         <div className="search-wrap" style={{ marginBottom: 20 }}>
-          <span className="search-icon">🔍</span>
+          <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
           <input placeholder="Search by name, city, subject..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {filtered.length === 0 && (
-            <div className="card empty-state"><div className="emoji">🏫</div><p>No institutes found</p></div>
+            <div className="card empty-state"><p>No institutes found</p></div>
           )}
           {filtered.map(c => {
             const admin = users.find(u => u.uid === c.adminId || u.id === c.adminId);
@@ -417,17 +400,17 @@ export default function SuperAdminDashboard({ active }) {
                         <div style={{ fontWeight: 700, fontSize: 15 }}>{c.name}</div>
                         {mapsUrl ? (
                           <a href={mapsUrl} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} style={{ fontSize: 12, color: "var(--accent2)", textDecoration: "none" }}>
-                            📍 {c.city || "—"} ↗
+                            {c.city || "—"} ↗
                           </a>
                         ) : (
-                          <span style={{ fontSize: 12, color: "var(--text3)" }}>📍 {c.city || "—"}</span>
+                          <span style={{ fontSize: 12, color: "var(--text3)" }}>{c.city || "—"}</span>
                         )}
                       </div>
                     </div>
                     <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 12, color: "var(--text2)" }}>
-                      {c.subject && <span>📚 {c.subject}</span>}
-                      {c.phone   && <span>📞 {c.phone}</span>}
-                      {admin     && <span>👨‍💼 {admin.name}</span>}
+                      {c.subject && <span>{c.subject}</span>}
+                      {c.phone   && <span>{c.phone}</span>}
+                      {admin     && <span>{admin.name}</span>}
                     </div>
                   </div>
 
@@ -437,7 +420,7 @@ export default function SuperAdminDashboard({ active }) {
                       background: visible ? "rgba(16,185,129,.12)" : "rgba(239,68,68,.12)",
                       color: visible ? "var(--green)" : "var(--red)",
                     }}>
-                      {visible ? "🟢 Visible" : "🔴 Hidden"}
+                      {visible ? "Visible" : "Hidden"}
                     </span>
                     <div style={{ fontSize: 20, fontWeight: 800, color: "var(--green)", textAlign: "right" }}>{studentCount}</div>
                     <div style={{ fontSize: 11, color: "var(--text3)" }}>students</div>
@@ -470,16 +453,16 @@ export default function SuperAdminDashboard({ active }) {
     return (
       <div className="fade-in">
         <div className="page-header">
-          <h2>👨‍🏫 All Tutors</h2>
+          <h2>All Tutors</h2>
           <p>{tutors.length} registered tutors on the platform</p>
         </div>
         <div className="search-wrap" style={{ marginBottom: 20 }}>
-          <span className="search-icon">🔍</span>
+          <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
           <input placeholder="Search by name, subject, city..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {filteredTutors.length === 0 && (
-            <div className="card empty-state"><div className="emoji">👨‍🏫</div><p>No tutors found</p></div>
+            <div className="card empty-state"><p>No tutors found</p></div>
           )}
           {filteredTutors.map(t => (
             <div key={t.id} className="card">
@@ -488,7 +471,7 @@ export default function SuperAdminDashboard({ active }) {
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                     <div style={{
                       width: 42, height: 42, borderRadius: "50%",
-                      background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
+                      background: "var(--bg-tertiary)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 18, fontWeight: 700, color: "#fff",
                     }}>
@@ -496,14 +479,14 @@ export default function SuperAdminDashboard({ active }) {
                     </div>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 15 }}>{t.name}</div>
-                      <div style={{ fontSize: 12, color: "var(--text3)" }}>📍 {t.city || "—"}</div>
+                      <div style={{ fontSize: 12, color: "var(--text3)" }}>{t.city || "—"}</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 14, flexWrap: "wrap", fontSize: 12, color: "var(--text2)" }}>
-                    {t.subject  && <span>📚 {t.subject}</span>}
-                    {t.yearsExp > 0 && <span>🕐 {t.yearsExp} years exp</span>}
-                    {t.phone    && <span>📞 {t.phone}</span>}
-                    {t.avgRating && <span>⭐ {t.avgRating} ({t.reviewCount || 0} reviews)</span>}
+                    {t.subject  && <span>{t.subject}</span>}
+                    {t.yearsExp > 0 && <span>{t.yearsExp} years exp</span>}
+                    {t.phone    && <span>{t.phone}</span>}
+                    {t.avgRating && <span>{t.avgRating} ({t.reviewCount || 0} reviews)</span>}
                   </div>
                   {t.bio && <p style={{ fontSize: 12, color: "var(--text2)", marginTop: 8, maxWidth: 500 }}>{t.bio.slice(0, 120)}...</p>}
                 </div>
@@ -521,12 +504,11 @@ export default function SuperAdminDashboard({ active }) {
     return (
       <div className="fade-in">
         <div className="page-header">
-          <h2>⭐ Reviews Overview</h2>
+          <h2>Reviews Overview</h2>
           <p>Platform-wide reviews are stored per coaching / per tutor in Firestore</p>
         </div>
         <div className="card">
           <div style={{ textAlign: "center", padding: "40px 20px" }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>⭐</div>
             <p style={{ color: "var(--text2)" }}>Reviews are stored in each Coaching and Tutor subcollection.</p>
             <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 8 }}>Use the Institutes or Tutors section to view individual reviews.</p>
           </div>
@@ -551,12 +533,12 @@ export default function SuperAdminDashboard({ active }) {
     return (
       <div className="fade-in">
         <div className="page-header">
-          <h2>👥 All Users</h2>
+          <h2>All Users</h2>
           <p>{users.length} registered platform users</p>
         </div>
 
         <div className="search-wrap" style={{ marginBottom: 20 }}>
-          <span className="search-icon">🔍</span>
+          <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
           <input placeholder="Search by name, email, or role..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
 
@@ -571,7 +553,7 @@ export default function SuperAdminDashboard({ active }) {
 
         <div className="card">
           {filtered.length === 0 && (
-            <div className="empty-state"><div className="emoji">👥</div><p>No users found</p></div>
+            <div className="empty-state"><p>No users found</p></div>
           )}
           <div className="table-wrap">
           <table className="table-mobile-cards">
@@ -635,11 +617,10 @@ export default function SuperAdminDashboard({ active }) {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>🚀 Platform Overview</h2>
+        <h2>Platform Overview</h2>
         <p>Select a section from the sidebar</p>
       </div>
       <div className="card empty-state">
-        <div className="emoji">🔧</div>
         <p>Select a page from the sidebar to continue</p>
       </div>
     </div>

@@ -41,7 +41,7 @@ export default function StudentAnnouncements() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📢 Announcements</h2>
+        <h2>Announcements</h2>
         <p>Latest updates from your coaching institute</p>
       </div>
 
@@ -49,7 +49,6 @@ export default function StudentAnnouncements() {
 
       {!loading && items.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📢</div>
           <p>No announcements yet</p>
           <span style={{ fontSize: 12, color: "var(--text3)" }}>Your institute admin will post updates here</span>
         </div>

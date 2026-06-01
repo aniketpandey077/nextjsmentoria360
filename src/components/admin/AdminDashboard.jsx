@@ -28,7 +28,7 @@ function ExploreToggleCard({ coachingId, initialValue }) {
     setSaving(true);
     try {
       await updateExploreVisibility(coachingId, next);
-      toast.success(next ? "Institute is now visible on Explore 🟢" : "Institute hidden from Explore 🔴");
+      toast.success(next ? "Institute is now visible on Explore" : "Institute hidden from Explore");
     } catch {
       setVisible(!next); // rollback
       toast.error("Failed to update visibility.");
@@ -38,21 +38,10 @@ function ExploreToggleCard({ coachingId, initialValue }) {
   };
 
   return (
-    <div
-      className="stat-card"
-      style={{
-        display: "flex", flexDirection: "column", gap: 14,
-        background: visible
-          ? "linear-gradient(135deg, rgba(16,185,129,.08), rgba(16,185,129,.03))"
-          : "linear-gradient(135deg, rgba(239,68,68,.08), rgba(239,68,68,.03))",
-        border: `1px solid ${visible ? "rgba(16,185,129,.25)" : "rgba(239,68,68,.22)"}`,
-      }}
-    >
-      {/* Header */}
+    <div className="stat-card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ fontSize: 22, marginBottom: 4 }}>🔍</div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text2)", textTransform: "uppercase", letterSpacing: ".06em" }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 4 }}>
             Explore Visibility
           </div>
         </div>
@@ -70,7 +59,6 @@ function ExploreToggleCard({ coachingId, initialValue }) {
             cursor: saving ? "not-allowed" : "pointer",
             transition: "background .3s",
             flexShrink: 0,
-            boxShadow: visible ? "0 0 12px rgba(16,185,129,.4)" : "none",
           }}
         >
           <div style={{
@@ -92,7 +80,7 @@ function ExploreToggleCard({ coachingId, initialValue }) {
           color: visible ? "var(--green)" : "var(--red)",
           marginBottom: 4,
         }}>
-          {saving ? "Saving…" : visible ? "🟢 Visible to students" : "🔴 Hidden from search"}
+          {saving ? "Saving…" : visible ? "Visible to students" : "Hidden from search"}
         </div>
         <div style={{ fontSize: 11, color: "var(--text3)", lineHeight: 1.5 }}>
           {visible
@@ -194,21 +182,19 @@ export default function AdminDashboard({ setActive }) {
       <div className="stats-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}>
         <div className="stat-card">
           <span className="stat-label">Total Students</span>
-          <span className="stat-value" style={{ color: "var(--accent2)" }}>{studentCount}</span>
+          <span className="stat-value">{studentCount}</span>
         </div>
         <div className="stat-card">
           <span className="stat-label">Total Revenue</span>
-          <span className="stat-value" style={{ color: "var(--green)" }}>{formatCurrency(totalRevenue)}</span>
+          <span className="stat-value">{formatCurrency(totalRevenue)}</span>
         </div>
         <div className="stat-card">
           <span className="stat-label">Pending Dues</span>
-          <span className="stat-value" style={{ color: "var(--amber)" }}>{formatCurrency(totalDue)}</span>
+          <span className="stat-value">{formatCurrency(totalDue)}</span>
         </div>
         <div className="stat-card">
           <span className="stat-label">Pending Requests</span>
-          <span className="stat-value" style={{ color: requests.length > 0 ? "var(--red)" : "var(--green)" }}>
-            {requests.length}
-          </span>
+          <span className="stat-value">{requests.length}</span>
         </div>
         {/* ── Explore Visibility Toggle ── */}
         <ExploreToggleCard
@@ -219,7 +205,7 @@ export default function AdminDashboard({ setActive }) {
 
       {/* Pending join requests */}
       {requests.length > 0 && (
-        <div className="card" style={{ borderLeft: "3px solid var(--amber)", marginBottom: 20 }}>
+        <div className="card" style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
             <h3 style={{ fontSize: 15 }}>Pending Join Requests</h3>
             <span className="badge badge-pending">{requests.length} pending</span>
@@ -278,7 +264,7 @@ export default function AdminDashboard({ setActive }) {
                 <div style={{ fontSize: 12, fontWeight: 500 }}>{t.studentName}</div>
                 <div style={{ fontSize: 11, color: "var(--text3)" }}>{t.note} · {t.date}</div>
               </div>
-              <div style={{ color: "var(--green)", fontWeight: 500, fontSize: 13 }}>
+              <div style={{ color: "var(--text-primary)", fontWeight: 500, fontSize: 13 }}>
                 +{formatCurrency(t.amount)}
               </div>
             </div>

@@ -119,8 +119,8 @@ export default function Sidebar({ role, active, setActive, profile, onLogout, pe
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 30, height: 30,
-              background: "linear-gradient(135deg, var(--accent), #8b5cf6)",
-              borderRadius: 8,
+              background: "var(--accent)",
+              borderRadius: 6,
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
@@ -128,7 +128,7 @@ export default function Sidebar({ role, active, setActive, profile, onLogout, pe
               </svg>
             </div>
             <div>
-              <h1 style={{ fontFamily: "Syne, sans-serif", fontSize: 16, fontWeight: 800, color: "var(--accent2)", lineHeight: 1 }}>
+              <h1 style={{ fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>
                 Mentoria360
               </h1>
               <p style={{ fontSize: 10, color: "var(--text3)", marginTop: 2 }}>
@@ -147,7 +147,7 @@ export default function Sidebar({ role, active, setActive, profile, onLogout, pe
               className={`nav-item${active === item.key ? " active" : ""}`}
               onClick={() => handleNavClick(item.key)}
             >
-              <NavIcon name={item.icon} size={14} />
+              <NavIcon name={item.icon} size={16} />
               <span style={{ flex: 1 }}>{item.label}</span>
               {item.key === "requests" && pendingCount > 0 && (
                 <span style={{

@@ -146,7 +146,7 @@ export default function AdminBatches() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📦 Batches</h2>
+        <h2>Batches</h2>
         <p>Group students into batches by schedule, subject, or level</p>
       </div>
 
@@ -158,7 +158,6 @@ export default function AdminBatches() {
 
       {!loading && batches.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📦</div>
           <p>No batches created yet</p>
           <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 4 }}>
             Create batches to group students by schedule, subject, or level.

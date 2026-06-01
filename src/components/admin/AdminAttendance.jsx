@@ -104,7 +104,7 @@ export default function AdminAttendance() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📅 Attendance</h2>
+        <h2>Attendance</h2>
         <p>Mark and track student attendance by date</p>
       </div>
 
@@ -155,7 +155,6 @@ export default function AdminAttendance() {
 
         {!loading && students.length === 0 && (
           <div className="empty-state">
-            <div className="emoji">👥</div>
             <p>No students enrolled yet</p>
           </div>
         )}

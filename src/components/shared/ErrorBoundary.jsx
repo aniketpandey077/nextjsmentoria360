@@ -36,8 +36,7 @@ export default class ErrorBoundary extends React.Component {
         color: "#e0d8ff",
         zIndex: 9999,
       }}>
-        <div style={{ fontSize: 56, marginBottom: 20 }}>⚠️</div>
-        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 24, marginBottom: 12, color: "#a78bfa" }}>
+        <h2 style={{ fontSize: 24, marginBottom: 12, color: "var(--accent)" }}>
           Something went wrong
         </h2>
         <p style={{ color: "#6b5faa", fontSize: 14, maxWidth: 380, marginBottom: 28, lineHeight: 1.6 }}>
@@ -58,13 +57,13 @@ export default class ErrorBoundary extends React.Component {
           onClick={() => window.location.reload()}
           style={{
             padding: "13px 32px", border: "none", borderRadius: 12,
-            background: "linear-gradient(135deg,#6c3ff5,#8b82ff)",
+            background: "var(--accent)",
             color: "#fff", fontFamily: "DM Sans, sans-serif",
             fontSize: 14, fontWeight: 700, cursor: "pointer",
             boxShadow: "0 6px 22px rgba(108,50,255,0.4)",
           }}
         >
-          🔄 Refresh Page
+          Refresh Page
         </button>
       </div>
     );

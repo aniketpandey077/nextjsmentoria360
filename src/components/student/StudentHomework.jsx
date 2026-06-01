@@ -53,7 +53,7 @@ export default function StudentHomework() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📋 Homework</h2>
+        <h2>Homework</h2>
         <p>View assigned homework and mark as submitted</p>
       </div>
 
@@ -61,7 +61,6 @@ export default function StudentHomework() {
 
       {!loading && homework.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📋</div>
           <p>No homework assigned yet</p>
           <span style={{ fontSize: 12, color: "var(--text3)" }}>Your teacher will assign homework here</span>
         </div>
@@ -84,7 +83,7 @@ export default function StudentHomework() {
                   }}>
                     {hw.subject?.toUpperCase()}
                   </span>
-                  {overdue && <span style={{ fontSize: 10, color: "var(--red)", fontWeight: 600 }}>⚠️ OVERDUE</span>}
+                  {overdue && <span style={{ fontSize: 10, color: "var(--red)", fontWeight: 600 }}>OVERDUE</span>}
                 </div>
                 <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{hw.title}</div>
                 {hw.description && (

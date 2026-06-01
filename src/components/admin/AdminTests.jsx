@@ -95,7 +95,7 @@ export default function AdminTests() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>🧪 Tests &amp; Quizzes</h2>
+        <h2>Tests &amp; Quizzes</h2>
         <p>Create MCQ and Theory tests, track student performance</p>
       </div>
 
@@ -107,7 +107,6 @@ export default function AdminTests() {
 
       {!loading && tests.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">🧪</div>
           <p>No tests created yet</p>
           <button className="btn btn-primary btn-sm" style={{ marginTop: 12 }} onClick={() => setShowAdd(true)}>
             Create First Test
@@ -243,7 +242,7 @@ export default function AdminTests() {
                       background: q.type === "theory" ? "rgba(168,85,247,0.15)" : "rgba(59,130,246,0.1)",
                       color: q.type === "theory" ? "#c084fc" : "#60a5fa",
                     }}>
-                      {q.type === "theory" ? "📝 Theory" : "🔘 MCQ"}
+                      {q.type === "theory" ? "Theory" : "MCQ"}
                     </span>
                   </div>
                   {form.questions.length > 1 && (

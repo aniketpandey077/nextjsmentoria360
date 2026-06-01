@@ -65,7 +65,7 @@ export default function AdminClasses() {
       {loading && <div style={{ textAlign: "center", padding: 60 }}><span className="spinner" /></div>}
 
       {!loading && classes.length === 0 && (
-        <div className="card empty-state"><div className="emoji">📚</div><p>No classes scheduled yet</p></div>
+        <div className="card empty-state"><p>No classes scheduled yet</p></div>
       )}
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
@@ -77,7 +77,7 @@ export default function AdminClasses() {
             padding: 18,
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-              <h3 style={{ fontSize: 17, fontFamily: "Syne, sans-serif", color: "var(--accent2)" }}>{cl.subject}</h3>
+              <h3 style={{ fontSize: 17, color: "var(--accent2)" }}>{cl.subject}</h3>
               <button
                 className="btn btn-danger btn-sm"
                 style={{ padding: "4px 8px" }}
@@ -87,10 +87,10 @@ export default function AdminClasses() {
               </button>
             </div>
             <div style={{ fontSize: 13, color: "var(--text2)", lineHeight: 1.8 }}>
-              <div>👨‍🏫 {cl.teacher}</div>
-              <div>📅 {cl.day}</div>
+              <div>{cl.teacher}</div>
+              <div>{cl.day}</div>
               <div>⏰ {cl.time}</div>
-              {cl.room && <div>🏫 Room {cl.room}</div>}
+              {cl.room && <div>Room {cl.room}</div>}
             </div>
           </div>
         ))}

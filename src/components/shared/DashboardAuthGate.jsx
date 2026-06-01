@@ -33,8 +33,7 @@ export default function DashboardAuthGate({ children, requiredRole }) {
         alignItems: "center", justifyContent: "center", padding: 32,
         textAlign: "center", gap: 16,
       }}>
-        <div style={{ fontSize: 48 }}>⚠️</div>
-        <h2 style={{ fontFamily: "Syne, sans-serif", color: "var(--accent2)" }}>
+        <h2 style={{ color: "var(--accent2)" }}>
           Could not load your profile
         </h2>
         <p style={{ color: "var(--text3)", fontSize: 14, maxWidth: 360 }}>

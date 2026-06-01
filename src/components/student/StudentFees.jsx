@@ -70,8 +70,7 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
       <div className="card" style={{ width: "100%", maxWidth: 440, padding: 28, borderRadius: "var(--radius-lg)" }}>
         {done ? (
           <div style={{ textAlign: "center", padding: "20px 0" }}>
-            <div style={{ fontSize: 56 }}>✅</div>
-            <h3 style={{ fontFamily: "Syne, sans-serif", marginTop: 12 }}>Payment Recorded!</h3>
+            <h3 style={{ marginTop: 12 }}>Payment Recorded!</h3>
             <p style={{ color: "var(--text2)", fontSize: 13, marginTop: 6 }}>
               Admin will confirm your payment shortly.
             </p>
@@ -80,7 +79,7 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
           <>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
               <div>
-                <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 18 }}>Pay Fees</h3>
+                <h3 style={{ fontSize: 18 }}>Pay Fees</h3>
                 <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 2 }}>
                   {fee.month} — Due: <strong style={{ color: "var(--amber)" }}>{formatCurrency(fee.due)}</strong>
                 </p>
@@ -91,9 +90,9 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
             {/* Payment method tabs */}
             <div className="tab-bar" style={{ marginBottom: 16 }}>
               {[
-                { key: "upi",        label: "📲 UPI" },
-                { key: "bank",       label: "🏦 Bank Transfer" },
-                { key: "cash",       label: "💵 Cash" },
+                { key: "upi",        label: "UPI" },
+                { key: "bank",       label: "Bank Transfer" },
+                { key: "cash",       label: " Cash" },
               ].map(m => (
                 <button key={m.key} className={`tab${method === m.key ? " active" : ""}`} onClick={() => setMethod(m.key)}>
                   {m.label}
@@ -106,11 +105,12 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
               <div style={{ textAlign: "center", padding: "12px 0" }}>
                 <div style={{
                   width: 120, height: 120, margin: "0 auto 12px",
-                  background: "linear-gradient(135deg, var(--accent), var(--accent2))",
-                  borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 48,
+                  background: "var(--bg-tertiary)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 14, color: "var(--text-secondary)",
                 }}>
-                  📲
+                  UPI
                 </div>
                 {upiId ? (
                   <>
@@ -166,7 +166,6 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
             {/* Cash */}
             {method === "cash" && (
               <div style={{ textAlign: "center", padding: "12px 0" }}>
-                <div style={{ fontSize: 56, marginBottom: 12 }}>💵</div>
                 <p style={{ fontSize: 13, color: "var(--text2)" }}>
                   Pay <strong>{formatCurrency(fee.due)}</strong> in cash at the institute office.
                 </p>
@@ -190,7 +189,7 @@ function ManualPayModal({ fee, coaching, profile, onClose, onPaid }) {
               </div>
               {amount < fee.due && amount > 0 && (
                 <p style={{ fontSize: 11, color: "var(--amber)", marginBottom: 10 }}>
-                  ⚠️ Partial payment — remaining {formatCurrency(fee.due - amount)} will still be due.
+                  Partial payment — remaining {formatCurrency(fee.due - amount)} will still be due.
                 </p>
               )}
               <button
@@ -306,7 +305,7 @@ export default function StudentFees() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>💰 My Fees</h2>
+        <h2>My Fees</h2>
         <p>Payment history and online payment</p>
       </div>
 
@@ -335,15 +334,15 @@ export default function StudentFees() {
       {/* ── Pay Now banner (if there are pending dues) ─────── */}
       {!loading && pendingFees.length > 0 && (
         <div style={{
-          background: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1))",
-          border: "1px solid rgba(245,158,11,0.3)",
-          borderRadius: 12, padding: "16px 20px",
+          background: "var(--bg-secondary)",
+          border: "1px solid var(--border)",
+          borderRadius: 8, padding: "16px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           gap: 12, marginBottom: 20, flexWrap: "wrap",
         }}>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "var(--amber)", marginBottom: 3 }}>
-              ⚠️ You have outstanding dues
+            <div style={{ fontWeight: 600, fontSize: 14, color: "var(--text-primary)", marginBottom: 3 }}>
+              You have outstanding dues
             </div>
             <div style={{ fontSize: 12, color: "var(--text2)" }}>
               {pendingFees.length} unpaid record{pendingFees.length > 1 ? "s" : ""} — total due:{" "}
@@ -354,9 +353,9 @@ export default function StudentFees() {
             className="btn btn-primary btn-sm"
             onClick={() => handlePayOnline(pendingFees[0])}
             disabled={paying === pendingFees[0]?.id}
-            style={{ background: "var(--amber)", border: "none", color: "#000", fontWeight: 700, whiteSpace: "nowrap" }}
+            style={{ whiteSpace: "nowrap" }}
           >
-            {paying === pendingFees[0]?.id ? <span className="spinner" /> : "💳 Pay Now"}
+            {paying === pendingFees[0]?.id ? <span className="spinner" /> : "Pay Now"}
           </button>
         </div>
       )}
@@ -367,7 +366,6 @@ export default function StudentFees() {
 
         {!loading && fees.length === 0 && (
           <div className="empty-state">
-            <div className="emoji">💰</div>
             <p>No fee records yet</p>
             <span style={{ fontSize: 12, color: "var(--text3)" }}>Your institute admin will add fee records here</span>
           </div>
@@ -410,7 +408,7 @@ export default function StudentFees() {
                           disabled={paying === f.id}
                           style={{ fontSize: 11, fontWeight: 700 }}
                         >
-                          {paying === f.id ? <span className="spinner" /> : "💳 Pay"}
+                          {paying === f.id ? <span className="spinner" /> : "Pay"}
                         </button>
                       )}
                       {f.paid > 0 && (

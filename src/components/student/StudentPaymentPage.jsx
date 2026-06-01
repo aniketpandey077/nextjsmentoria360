@@ -13,7 +13,7 @@ import {
 } from "../../services/firestoreService";
 import toast from "react-hot-toast";
 
-const METHOD_ICONS = { upi: "💳", qr: "📷", bank: "🏦", paytm: "📱", other: "💰" };
+const METHOD_ICONS = { upi: "UPI", qr: "QR", bank: "Bank", paytm: "Paytm", other: "Other" };
 const METHOD_LABELS = { upi: "UPI", qr: "QR Code", bank: "Bank Account", paytm: "Paytm", other: "Other" };
 
 export default function StudentPaymentPage() {
@@ -58,11 +58,10 @@ export default function StudentPaymentPage() {
   if (coachings.length === 0) return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>💳 Fee Payments</h2>
+        <h2>Fee Payments</h2>
         <p>View payment details for your enrolled institutes</p>
       </div>
       <div className="card empty-state">
-        <div className="emoji">🏫</div>
         <p>You are not enrolled in any coaching yet</p>
       </div>
     </div>
@@ -73,13 +72,14 @@ export default function StudentPaymentPage() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>💳 Fee Payment Details</h2>
+        <h2>Fee Payment Details</h2>
         <p>Payment methods for your enrolled institutes</p>
       </div>
 
       {/* ── IMPORTANT NOTE ───────────────────────────────── */}
       <div style={{
-        background: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05))",
+        background: "var(--bg-secondary)",
+        border: "1px solid var(--border)",
         border: "1px solid rgba(245,158,11,0.4)",
         borderRadius: "var(--radius)",
         padding: "16px 20px",
@@ -121,7 +121,7 @@ export default function StudentPaymentPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
             <div style={{
               width: 40, height: 40, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--accent), #8b5cf6)",
+              background: "var(--accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 18, fontWeight: 700, color: "#fff",
             }}>
@@ -135,7 +135,6 @@ export default function StudentPaymentPage() {
 
           {currentMethods.length === 0 ? (
             <div className="card" style={{ textAlign: "center", padding: "40px 20px" }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>💳</div>
               <p style={{ color: "var(--text2)" }}>No payment methods added by this institute yet</p>
               <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 4 }}>Contact your institute admin for payment details</p>
             </div>

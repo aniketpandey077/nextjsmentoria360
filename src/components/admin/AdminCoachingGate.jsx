@@ -9,8 +9,7 @@ export default function AdminCoachingGate({ children }) {
   if (!profile?.coachingId) {
     return (
       <div className="fade-in" style={{ maxWidth: 480, margin: "48px auto", textAlign: "center" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🏫</div>
-        <h2 style={{ fontFamily: "Syne, sans-serif", color: "var(--accent2)", marginBottom: 12 }}>
+        <h2 style={{ color: "var(--accent2)", marginBottom: 12 }}>
           Institute setup incomplete
         </h2>
         <p style={{ color: "var(--text3)", fontSize: 14, lineHeight: 1.6 }}>

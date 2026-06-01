@@ -7,24 +7,23 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "sans-serif"],
-        display: ["Syne", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
         bg: {
-          primary: "#0f0f13",
-          secondary: "#16161c",
-          tertiary: "#1e1e27",
-          card: "#252530",
+          primary: "#0a0a0a",
+          secondary: "#111111",
+          tertiary: "#1a1a1a",
         },
         accent: {
-          DEFAULT: "#6c63ff",
-          light: "#8b82ff",
-          bg: "rgba(108,99,255,0.12)",
+          DEFAULT: "#5b6af0",
+          hover: "#4a58e0",
+          bg: "rgba(91, 106, 240, 0.12)",
         },
         border: {
-          DEFAULT: "#2e2e3a",
-          light: "#3a3a48",
+          DEFAULT: "#2a2a2a",
+          hover: "#3a3a3a",
         },
       },
     },

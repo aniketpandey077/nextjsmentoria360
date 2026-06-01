@@ -102,11 +102,11 @@ export default function TutorDashboard() {
       <div className="page-header">
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div>
-            <h2>👨‍🏫 Tutor Dashboard</h2>
+            <h2>Tutor Dashboard</h2>
             <p>Manage your tutor profile visible to students on Mentoria360</p>
           </div>
           {tutorProfile && (
-            <span className="badge badge-approved" style={{ marginLeft: "auto" }}>✓ Active on platform</span>
+            <span className="badge badge-approved" style={{ marginLeft: "auto" }}>Active on platform</span>
           )}
         </div>
       </div>
@@ -115,26 +115,22 @@ export default function TutorDashboard() {
       {tutorProfile && (
         <div className="stats-grid" style={{ marginBottom: 24 }}>
           <div className="stat-card">
-            <span style={{ fontSize: 22 }}>⭐</span>
-            <span className="stat-value" style={{ color: "var(--amber)" }}>{avgRating || "—"}</span>
             <span className="stat-label">Avg Rating</span>
+            <span className="stat-value">{avgRating || "—"}</span>
           </div>
           <div className="stat-card">
-            <span style={{ fontSize: 22 }}>📝</span>
-            <span className="stat-value" style={{ color: "var(--accent2)" }}>{reviews.length}</span>
             <span className="stat-label">Reviews</span>
+            <span className="stat-value">{reviews.length}</span>
           </div>
           <div className="stat-card">
-            <span style={{ fontSize: 22 }}>📚</span>
-            <span className="stat-value" style={{ fontSize: 18, color: "var(--text)" }}>
+            <span className="stat-label">Main Subject</span>
+            <span className="stat-value" style={{ fontSize: "1.125rem" }}>
               {tutorProfile.subject?.split(",")[0] || "—"}
             </span>
-            <span className="stat-label">Main Subject</span>
           </div>
           <div className="stat-card">
-            <span style={{ fontSize: 22 }}>🕐</span>
-            <span className="stat-value" style={{ color: "var(--green)" }}>{tutorProfile.yearsExp || 0}</span>
             <span className="stat-label">Years Exp.</span>
+            <span className="stat-value">{tutorProfile.yearsExp || 0}</span>
           </div>
         </div>
       )}
@@ -143,8 +139,8 @@ export default function TutorDashboard() {
       <div className="tab-bar" style={{ marginBottom: 24 }}>
         {[
           { key: "profile", label: "My Profile" },
-          { key: "payments", label: "💳 Payment Methods" },
-          { key: "reviews", label: `⭐ Reviews (${reviews.length})` },
+          { key: "payments", label: "Payment Methods" },
+          { key: "reviews", label: `Reviews (${reviews.length})` },
         ].map(t => (
           <button key={t.key} className={`tab${activeTab === t.key ? " active" : ""}`} onClick={() => setActiveTab(t.key)}>
             {t.label}
@@ -155,7 +151,7 @@ export default function TutorDashboard() {
       {/* ── Profile Tab ─────────────────────────── */}
       {activeTab === "profile" && (
         <div className="card">
-          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 16, marginBottom: 20 }}>
+          <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: 20 }}>
             Tutor Profile — Visible to Students
           </h3>
 
@@ -255,7 +251,6 @@ export default function TutorDashboard() {
         <div>
           {reviews.length === 0 ? (
             <div className="card empty-state">
-              <div className="emoji">⭐</div>
               <p>No reviews yet</p>
               <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 4 }}>Students who contact you will be able to leave reviews</p>
             </div>

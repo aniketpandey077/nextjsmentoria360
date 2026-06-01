@@ -180,7 +180,7 @@ export default function AdminFees() {
         {loading && <div style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></div>}
 
         {!loading && fees.length === 0 && (
-          <div className="empty-state"><div className="emoji">💰</div><p>No fee records yet</p></div>
+          <div className="empty-state"><p>No fee records yet</p></div>
         )}
 
         {!loading && fees.length > 0 && (
@@ -219,7 +219,7 @@ export default function AdminFees() {
                     )}
                     {f.paid > 0 && (
                       <button className="btn btn-secondary btn-sm" onClick={() => setReceipt(f)}>
-                        🧾 Receipt
+                        Receipt
                       </button>
                     )}
                     </div>

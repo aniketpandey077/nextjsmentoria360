@@ -61,7 +61,7 @@ export default function AdminHomework() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📋 Homework</h2>
+        <h2>Homework</h2>
         <p>Assign homework and track student submissions</p>
       </div>
 
@@ -73,7 +73,6 @@ export default function AdminHomework() {
 
       {!loading && homework.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📋</div>
           <p>No homework assigned yet</p>
           <button className="btn btn-primary btn-sm" style={{ marginTop: 12 }} onClick={() => setShowAdd(true)}>
             Assign First Homework
@@ -97,7 +96,7 @@ export default function AdminHomework() {
                     {hw.subject?.toUpperCase()}
                   </span>
                   {overdue && (
-                    <span style={{ fontSize: 10, color: "var(--red)", fontWeight: 600 }}>⚠️ OVERDUE</span>
+                    <span style={{ fontSize: 10, color: "var(--red)", fontWeight: 600 }}>OVERDUE</span>
                   )}
                 </div>
                 <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{hw.title}</div>

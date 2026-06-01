@@ -154,7 +154,7 @@ export default function FeeReceipt({ fee, coachingName, coachingCity, onClose })
         {/* Header */}
         <div style={{ background: "var(--accent)", padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ color: "#fff", fontWeight: 700, fontSize: 16, fontFamily: "Syne, sans-serif" }}>Mentorria360</div>
+            <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>Mentorria360</div>
             <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, marginTop: 2 }}>FEE RECEIPT</div>
           </div>
           <div style={{ textAlign: "right" }}>
@@ -204,7 +204,7 @@ export default function FeeReceipt({ fee, coachingName, coachingCity, onClose })
             <button className="btn btn-primary" style={{ flex: 1 }} onClick={downloadPDF}>
               ⬇️ Download PDF
             </button>
-            <button className="btn btn-secondary" onClick={() => window.print()}>🖨️ Print</button>
+            <button className="btn btn-secondary" onClick={() => window.print()}>Print</button>
             <button className="btn btn-secondary" onClick={onClose}>✕ Close</button>
           </div>
         </div>

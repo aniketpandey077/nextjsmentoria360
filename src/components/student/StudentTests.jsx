@@ -157,7 +157,7 @@ export default function StudentTests() {
             marginBottom: 16,
             borderLeft: `3px solid ${
               q.type === "theory"
-                ? (theoryAnswers[qi]?.trim() ? "var(--purple, #8b5cf6)" : "var(--border)")
+                ? (theoryAnswers[qi]?.trim() ? "var(--purple, var(--accent-hover))" : "var(--border)")
                 : (mcqAnswers[qi] !== undefined ? "var(--green)" : "var(--border)")
             }`,
           }}>
@@ -169,7 +169,7 @@ export default function StudentTests() {
                 background: q.type === "theory" ? "rgba(168,85,247,0.12)" : "rgba(59,130,246,0.1)",
                 color: q.type === "theory" ? "#c084fc" : "#60a5fa",
               }}>
-                {q.type === "theory" ? "📝 Theory" : "🔘 MCQ"}
+                {q.type === "theory" ? "Theory" : "MCQ"}
               </span>
             </div>
 
@@ -246,7 +246,7 @@ export default function StudentTests() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>🧪 Tests &amp; Quizzes</h2>
+        <h2>Tests &amp; Quizzes</h2>
         <p>Attempt tests and view your scores</p>
       </div>
 
@@ -254,7 +254,6 @@ export default function StudentTests() {
 
       {!loading && tests.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">🧪</div>
           <p>No tests available yet</p>
           <span style={{ fontSize: 12, color: "var(--text3)" }}>Your institute admin will create tests here</span>
         </div>

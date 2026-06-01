@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 
 const SUBJECTS = ["Mathematics", "Physics", "Chemistry", "Biology", "English", "Computer Science", "General"];
 const TYPES    = ["PDF", "Video Link", "Notes", "Assignment", "Other"];
-const TYPE_ICON = { PDF: "📄", "Video Link": "🎥", Notes: "📝", Assignment: "📋", Other: "📁" };
+const TYPE_ICON = { PDF: "PDF", "Video Link": "Video", Notes: "Notes", Assignment: "Assignment", Other: "File" };
 
 export default function AdminMaterials() {
   const { profile } = useAuth();
@@ -83,7 +83,7 @@ export default function AdminMaterials() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📚 Study Materials</h2>
+        <h2>Study Materials</h2>
         <p>Upload notes, PDFs, and video links for your students</p>
       </div>
 
@@ -107,7 +107,6 @@ export default function AdminMaterials() {
 
       {!loading && filtered.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📚</div>
           <p>No materials uploaded yet</p>
           <button className="btn btn-primary btn-sm" style={{ marginTop: 12 }} onClick={() => setShowAdd(true)}>
             Upload First Material

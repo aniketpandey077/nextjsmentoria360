@@ -61,8 +61,7 @@ export default function StudentDashboard({ setActive }) {
   if (isPending) return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "70vh" }}>
       <div style={{ textAlign: "center", maxWidth: 420 }}>
-        <div style={{ fontSize: 72, marginBottom: 20 }}>⏳</div>
-        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 24, marginBottom: 12 }}>Approval Pending</h2>
+        <h2 style={{ fontSize: 24, marginBottom: 12 }}>Approval Pending</h2>
         <p style={{ color: "var(--text2)", lineHeight: 1.7, marginBottom: 20 }}>
           Your join request has been submitted. The coaching admin will review and
           approve it. This page updates automatically once approved.
@@ -85,8 +84,7 @@ export default function StudentDashboard({ setActive }) {
   if (isIndependent || (!hasCoachings && !isPending)) return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "70vh" }}>
       <div style={{ textAlign: "center", maxWidth: 460 }}>
-        <div style={{ fontSize: 72, marginBottom: 20 }}>🎓</div>
-        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 26, marginBottom: 12 }}>
+        <h2 style={{ fontSize: 26, marginBottom: 12 }}>
           Welcome to Mentoria360!
         </h2>
         <p style={{ color: "var(--text2)", lineHeight: 1.7, marginBottom: 24 }}>
@@ -98,7 +96,7 @@ export default function StudentDashboard({ setActive }) {
           style={{ fontSize: 15, padding: "12px 28px" }}
           onClick={() => setActive("profile")}
         >
-          🔍 Find &amp; Join a Coaching
+          Find &amp; Join a Coaching
         </button>
         <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 16 }}>
           Go to <strong>My Profile</strong> → <em>My Coachings</em> to search and send join requests.
@@ -121,7 +119,7 @@ export default function StudentDashboard({ setActive }) {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>Welcome, {(profile?.name || "Student").split(" ")[0]}! 👋</h2>
+        <h2>Welcome, {(profile?.name || "Student").split(" ")[0]}</h2>
         <p>
           {coaching
             ? `Enrolled at ${coaching.name} · ${coaching.city}`
@@ -131,7 +129,7 @@ export default function StudentDashboard({ setActive }) {
 
       {!coaching && (
         <div className="alert alert-info" style={{ marginBottom: 20 }}>
-          📌 Select a coaching institute above to see your classes, fees, and more.
+          Select a coaching institute above to see your classes, fees, and more.
           Or go to <strong>My Profile</strong> to join a new coaching.
         </div>
       )}
@@ -211,7 +209,7 @@ export default function StudentDashboard({ setActive }) {
           {/* Contact institute */}
           <div className="card" style={{ marginTop: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h3 style={{ fontSize: 15 }}>📞 Contact Institute</h3>
+              <h3 style={{ fontSize: 15 }}>Contact Institute</h3>
               <p style={{ fontSize: 13, color: "var(--text2)", marginTop: 4 }}>
                 {coaching.name} · {coaching.city}
               </p>
@@ -237,7 +235,7 @@ export default function StudentDashboard({ setActive }) {
       {/* CTA to join more coachings */}
       <div className="card" style={{ marginTop: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
         <div>
-          <div style={{ fontWeight: 600, fontSize: 14 }}>🏫 Enroll in Another Coaching</div>
+          <div style={{ fontWeight: 600, fontSize: 14 }}>Enroll in Another Coaching</div>
           <div style={{ fontSize: 12, color: "var(--text3)", marginTop: 3 }}>
             You can be part of multiple coaching institutes at once
           </div>

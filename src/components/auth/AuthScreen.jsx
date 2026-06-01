@@ -111,8 +111,7 @@ function SocialProfileSetup({ firebaseUser, preSelectedCoaching, onComplete, onC
     }}>
       <div className="card" style={{ width: "100%", maxWidth: 460, padding: 32, borderRadius: "var(--radius-lg)" }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 40, marginBottom: 8 }}>👋</div>
-          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 22, marginBottom: 6 }}>Complete Your Profile</h2>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: 6 }}>Complete Your Profile</h2>
           <p style={{ fontSize: 13, color: "var(--text2)" }}>Just a few details to get you started</p>
         </div>
 
@@ -167,7 +166,7 @@ function SocialProfileSetup({ firebaseUser, preSelectedCoaching, onComplete, onC
             {!selectedCoaching && (
               <>
                 <div className="search-wrap" style={{ marginBottom: 10 }}>
-                  <span className="search-icon">🔍</span>
+                  <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
                   <input placeholder="Search institute..." value={searchQ} onChange={e => handleSearch(e.target.value)} />
                 </div>
                 <div style={{ maxHeight: 200, overflowY: "auto", display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
@@ -178,7 +177,7 @@ function SocialProfileSetup({ firebaseUser, preSelectedCoaching, onComplete, onC
                       borderRadius: 8, cursor: "pointer", fontSize: 13,
                     }}>
                       <div style={{ fontWeight: 500 }}>{c.name}</div>
-                      <div style={{ fontSize: 11, color: "var(--text3)" }}>📍 {c.city} · {c.subject}</div>
+                      <div style={{ fontSize: 11, color: "var(--text3)" }}>{c.city} · {c.subject}</div>
                     </div>
                   ))}
                   {!searching && !searchQ && <div style={{ textAlign: "center", padding: 16, color: "var(--text3)", fontSize: 11 }}>Type to search...</div>}
@@ -492,7 +491,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                 ← Back to Home
               </button>
             )}
-            <h1 className="auth-screen-title" style={{ fontFamily: "Syne, sans-serif", fontSize: 40, fontWeight: 800, color: "var(--accent2)" }}>
+            <h1 className="auth-screen-title" style={{ fontSize: "2rem", fontWeight: 700, color: "var(--text-primary)" }}>
               Mentoria360
             </h1>
             <p style={{ color: "var(--text2)", fontSize: 13, marginTop: 4 }}>
@@ -740,7 +739,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                 {regRole === "tutor" && (
                   <>
                     <div className="alert alert-info" style={{ fontSize: 12 }}>
-                      👨‍🏫 You'll register a standard account and then complete your tutor profile from the dashboard.
+                      You'll register a standard account and then complete your tutor profile from the dashboard.
                     </div>
                     <div className="form-group">
                       <label className="form-label">Full Name</label>
@@ -837,7 +836,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                           <div>
                             <div style={{ fontWeight: 600, fontSize: 13 }}>{selectedCoaching.name}</div>
                             <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>
-                              📍 {selectedCoaching.city} · 📚 {selectedCoaching.subject}
+                              {selectedCoaching.city} · {selectedCoaching.subject}
                             </div>
                           </div>
                           <button onClick={() => setSelectedCoaching(null)} style={{ background: "none", border: "none", color: "var(--text3)", cursor: "pointer", fontSize: 16 }}>×</button>
@@ -846,7 +845,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                     ) : (
                       <>
                         <div className="search-wrap" style={{ marginBottom: 10 }}>
-                          <span className="search-icon">🔍</span>
+                          <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
                           <input placeholder="Search by name, city, or subject..." value={searchQ} onChange={e => handleSearch(e.target.value)} />
                         </div>
                         <div style={{ maxHeight: 200, overflowY: "auto", display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
@@ -858,7 +857,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                               transition: "all 0.15s",
                             }}>
                               <div style={{ fontWeight: 500, fontSize: 13 }}>{c.name}</div>
-                              <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>📍 {c.city} · 📚 {c.subject}</div>
+                              <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>{c.city} · {c.subject}</div>
                             </div>
                           ))}
                           {!searching && searchQ && coachingResults.length === 0 && (

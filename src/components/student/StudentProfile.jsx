@@ -90,7 +90,7 @@ function JoinCoachingPanel({ profile, onRequestSent }) {
   return (
     <div>
       <div className="search-wrap" style={{ marginBottom: 12 }}>
-        <span className="search-icon">🔍</span>
+        <span className="search-icon" aria-hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
         <input
           placeholder="Search by name, city, or subject..."
           value={searchQ}
@@ -129,7 +129,7 @@ function JoinCoachingPanel({ profile, onRequestSent }) {
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: 14 }}>{c.name}</div>
                 <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>
-                  📍 {c.city} · 📚 {c.subject || "General"}
+                  {c.city} · {c.subject || "General"}
                 </div>
               </div>
               <button
@@ -212,7 +212,7 @@ export default function StudentProfile() {
 
   const fields = [
     { key: "name",   label: "Full Name",      placeholder: "Your full name",        icon: "👤" },
-    { key: "phone",  label: "Phone Number",   placeholder: "9876543210",            icon: "📱" },
+    { key: "phone",  label: "Phone Number",   placeholder: "9876543210",            icon: "Pay" },
     { key: "parent", label: "Parent's Name",  placeholder: "Parent / Guardian",     icon: "👨‍👩‍👧" },
     { key: "school", label: "School / Board", placeholder: "e.g. CBSE / State",     icon: "🏫" },
     { key: "goals",  label: "Academic Goals", placeholder: "e.g. IIT-JEE 2026...", icon: "🎯" },
@@ -301,7 +301,7 @@ export default function StudentProfile() {
         {/* ── My Coachings ─────────────────────────────────── */}
         <div className="card" style={{ marginBottom: 20 }}>
           <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 16, paddingBottom: 10, borderBottom: "1px solid var(--border)" }}>
-            🏫 My Coachings
+            My Coachings
           </div>
 
           {/* Enrolled */}
@@ -319,7 +319,7 @@ export default function StudentProfile() {
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: 14 }}>{c.name}</div>
                 <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 3 }}>
-                  📍 {c.city} {c.subject ? `· 📚 ${c.subject}` : ""}
+                  {c.city} {c.subject ? `· ${c.subject}` : ""}
                 </div>
                 <span className="badge badge-approved" style={{ fontSize: 10, marginTop: 4, display: "inline-block" }}>
                   ✅ Enrolled

@@ -42,7 +42,6 @@ export default function StudentWorkshops() {
 
       {!loading && workshops.length === 0 && (
         <div className="card empty-state">
-          <div className="emoji">🎓</div>
           <p>No upcoming workshops</p>
         </div>
       )}
@@ -57,15 +56,15 @@ export default function StudentWorkshops() {
             <div key={w.id} className="card">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
-                  <h3 style={{ fontSize: 17, fontFamily: "Syne, sans-serif", marginBottom: 6 }}>{w.title}</h3>
+                  <h3 style={{ fontSize: 17, marginBottom: 6 }}>{w.title}</h3>
                   {w.description && (
                     <p style={{ fontSize: 13, color: "var(--text2)", marginBottom: 8 }}>{w.description}</p>
                   )}
                   <div style={{ fontSize: 13, color: "var(--text2)", display: "flex", gap: 16, flexWrap: "wrap" }}>
-                    <span>📅 {w.date}</span>
+                    <span>{w.date}</span>
                     {w.time && <span>⏰ {w.time}</span>}
-                    <span>💺 {w.seats - (w.enrolled || 0)} seats left</span>
-                    <span>{w.fee === 0 ? "🆓 Free" : `💰 ₹${w.fee}`}</span>
+                    <span>{w.seats - (w.enrolled || 0)} seats left</span>
+                    <span>{w.fee === 0 ? "Free" : `₹₹${w.fee}`}</span>
                   </div>
                 </div>
                 <button

@@ -16,11 +16,11 @@ import {
 import toast from "react-hot-toast";
 
 const METHOD_TYPES = [
-  { value: "upi",     label: "UPI ID",      icon: "💳" },
-  { value: "qr",      label: "QR Code",     icon: "📷" },
-  { value: "bank",    label: "Bank Account", icon: "🏦" },
-  { value: "paytm",   label: "Paytm",       icon: "📱" },
-  { value: "other",   label: "Other",        icon: "💰" },
+  { value: "upi",     label: "UPI ID",      icon: "UPI" },
+  { value: "qr",      label: "QR Code",     icon: "QR" },
+  { value: "bank",    label: "Bank Account", icon: "Bank" },
+  { value: "paytm",   label: "Paytm",       icon: "Pay" },
+  { value: "other",   label: "Other",        icon: "Other" },
 ];
 
 export default function AdminPaymentMethods({ entityType = "coaching" }) {
@@ -125,7 +125,7 @@ export default function AdminPaymentMethods({ entityType = "coaching" }) {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>💳 Payment Methods</h2>
+        <h2>Payment Methods</h2>
         <p>Add how students can pay their fees — they will see a note to write their name</p>
       </div>
 
@@ -154,7 +154,7 @@ export default function AdminPaymentMethods({ entityType = "coaching" }) {
         }}>
           <div className="card" style={{ width: "100%", maxWidth: 480, padding: 28, borderRadius: "var(--radius-lg)", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
-              <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 18 }}>Add Payment Method</h3>
+              <h3 style={{ fontSize: 18 }}>Add Payment Method</h3>
               <button onClick={() => setShowAdd(false)} style={{ background: "none", border: "none", color: "var(--text3)", fontSize: 20, cursor: "pointer" }}>×</button>
             </div>
 
@@ -242,7 +242,6 @@ export default function AdminPaymentMethods({ entityType = "coaching" }) {
         <div style={{ textAlign: "center", padding: 40 }}><span className="spinner" style={{ width: 30, height: 30 }} /></div>
       ) : methods.length === 0 ? (
         <div className="card empty-state">
-          <div className="emoji">💳</div>
           <p>No payment methods added yet</p>
           <p style={{ fontSize: 12, color: "var(--text3)", marginTop: 4 }}>Add UPI, QR code, or bank details for your students</p>
         </div>
@@ -265,12 +264,12 @@ export default function AdminPaymentMethods({ entityType = "coaching" }) {
 
                 {m.upiId && (
                   <div style={{ fontSize: 13, color: "var(--accent2)", fontFamily: "monospace", marginBottom: 4 }}>
-                    📲 {m.upiId}
+                    {m.upiId}
                   </div>
                 )}
                 {m.accountNo && (
                   <div style={{ fontSize: 12, color: "var(--text2)", marginBottom: 2 }}>
-                    🏦 {m.bankName} · A/C: {m.accountNo} · IFSC: {m.ifsc}
+                    {m.bankName} · A/C: {m.accountNo} · IFSC: {m.ifsc}
                   </div>
                 )}
                 {m.accountHolder && (

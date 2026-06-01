@@ -29,7 +29,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 500
       >
         {title && (
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-            <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 18, fontWeight: 700 }}>{title}</h3>
+            <h3 style={{ fontSize: 18, fontWeight: 700 }}>{title}</h3>
             <button
               onClick={onClose}
               style={{ background: "none", border: "none", color: "var(--text3)", cursor: "pointer", fontSize: 20, lineHeight: 1 }}

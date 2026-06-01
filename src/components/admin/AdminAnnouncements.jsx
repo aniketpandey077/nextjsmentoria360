@@ -73,7 +73,7 @@ export default function AdminAnnouncements() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📢 Announcements</h2>
+        <h2>Announcements</h2>
         <p>Post notices, exam schedules, and holiday updates to your students</p>
       </div>
 
@@ -87,7 +87,6 @@ export default function AdminAnnouncements() {
 
       {!loading && items.length === 0 && (
         <div className="empty-state">
-          <div className="emoji">📢</div>
           <p>No announcements yet</p>
           <button className="btn btn-primary btn-sm" style={{ marginTop: 12 }} onClick={() => setShowAdd(true)}>
             Post Your First Announcement

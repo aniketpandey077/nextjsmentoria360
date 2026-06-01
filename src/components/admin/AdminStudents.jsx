@@ -101,7 +101,6 @@ export default function AdminStudents() {
 
         {!loading && filtered.length === 0 && (
           <div className="empty-state">
-            <div className="emoji">👥</div>
             <p>{search ? "No students match your search" : "No students enrolled yet"}</p>
           </div>
         )}

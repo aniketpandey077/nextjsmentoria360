@@ -129,7 +129,6 @@ export default function AdminRequests() {
 
         {!loading && filtered.length === 0 && (
           <div className="empty-state">
-            <div className="emoji">📋</div>
             <p>No {filter === "all" ? "" : filter} requests found</p>
           </div>
         )}

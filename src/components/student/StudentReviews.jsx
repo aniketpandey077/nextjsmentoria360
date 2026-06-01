@@ -98,13 +98,12 @@ export default function StudentReviews() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>⭐ Write a Review</h2>
+        <h2>Write a Review</h2>
         <p>Share your experience and help other students choose the right institute</p>
       </div>
 
       {coachings.length === 0 ? (
         <div className="card empty-state">
-          <div className="emoji">🏫</div>
           <p>You need to be enrolled in a coaching to write a review</p>
         </div>
       ) : (
@@ -125,7 +124,7 @@ export default function StudentReviews() {
               {/* Write review */}
               <div>
                 <div className="card">
-                  <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 16, marginBottom: 16 }}>
+                  <h3 style={{ fontSize: 16, marginBottom: 16 }}>
                     Review: {selected.name}
                   </h3>
 
@@ -166,7 +165,7 @@ export default function StudentReviews() {
 
               {/* Existing reviews */}
               <div>
-                <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 16, marginBottom: 12 }}>
+                <h3 style={{ fontSize: 16, marginBottom: 12 }}>
                   All Reviews ({reviews.length})
                 </h3>
                 {reviewsLoading ? (

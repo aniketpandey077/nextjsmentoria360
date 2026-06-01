@@ -9,7 +9,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useStudentCoaching } from "../../contexts/StudentCoachingContext";
 import { getStudentAttendanceHistory } from "../../services/firestoreService";
 
-const STATUS_EMOJI = { present: "✅", absent: "❌", late: "🕐" };
+const STATUS_LABEL = { present: "Present", absent: "Absent", late: "Late" };
 const STATUS_COLOR = { present: "var(--green)", absent: "var(--red)", late: "var(--amber)" };
 
 export default function StudentAttendance() {
@@ -46,7 +46,7 @@ export default function StudentAttendance() {
   return (
     <div className="fade-in">
       <div className="page-header">
-        <h2>📅 My Attendance</h2>
+        <h2>My Attendance</h2>
         <p>Track your presence and attendance percentage</p>
       </div>
 
@@ -59,7 +59,7 @@ export default function StudentAttendance() {
             <div className="stat-card" style={{ gridColumn: "span 2", textAlign: "center" }}>
               <span className="stat-label">Overall Attendance</span>
               <div style={{ marginTop: 8 }}>
-                <span style={{ fontSize: 48, fontWeight: 800, color: pctColor, fontFamily: "Syne, sans-serif" }}>
+                <span style={{ fontSize: 48, fontWeight: 800, color: pctColor }}>
                   {pct}%
                 </span>
               </div>
@@ -68,7 +68,7 @@ export default function StudentAttendance() {
                 <div style={{ height: "100%", width: `${pct}%`, background: pctColor, borderRadius: 10, transition: "width 0.5s" }} />
               </div>
               <div style={{ fontSize: 11, color: "var(--text3)" }}>
-                {pct >= 75 ? "✅ Good attendance!" : pct >= 50 ? "⚠️ At risk — attendance below 75%" : "🚨 Critical — attendance very low!"}
+                {pct >= 75 ? "Good attendance" : pct >= 50 ? "At risk — attendance below 75%" : "Critical — attendance very low"}
               </div>
             </div>
             <div className="stat-card">
@@ -92,7 +92,6 @@ export default function StudentAttendance() {
           {/* Monthly history */}
           {Object.keys(byMonth).length === 0 ? (
             <div className="empty-state">
-              <div className="emoji">📅</div>
               <p>No attendance records yet</p>
               <span style={{ fontSize: 12, color: "var(--text3)" }}>Your institute admin will start marking attendance soon</span>
             </div>
@@ -133,7 +132,7 @@ export default function StudentAttendance() {
                         <div style={{ fontSize: 10, color: STATUS_COLOR[r.status], fontWeight: 600 }}>
                           {r.date.slice(8)}
                         </div>
-                        <div style={{ fontSize: 12 }}>{STATUS_EMOJI[r.status]}</div>
+                        <div style={{ fontSize: 10, color: STATUS_COLOR[r.status] }}>{STATUS_LABEL[r.status]}</div>
                       </div>
                     ))}
                   </div>

@@ -29,7 +29,7 @@ const STEPS = {
       hint: "Sidebar → Batches",
     },
     {
-      icon: "💰",
+      icon: "Other",
       title: "Fees",
       desc: "Add fee records for one or all students at once, track paid/due amounts, and generate receipts.",
       hint: "Sidebar → Fees",
@@ -41,7 +41,7 @@ const STEPS = {
       hint: "Sidebar → Tests",
     },
     {
-      icon: "💳",
+      icon: "UPI",
       title: "Payment Methods",
       desc: "Add your UPI, bank account, or QR code so students know how to pay fees.",
       hint: "Sidebar → Payments",
@@ -67,7 +67,7 @@ const STEPS = {
       hint: "Dashboard → My Profile",
     },
     {
-      icon: "💳",
+      icon: "UPI",
       title: "Payment Methods",
       desc: "Add payment details so interested students know how to pay you.",
       hint: "Dashboard → 💳 Payment Methods",
@@ -76,7 +76,7 @@ const STEPS = {
       icon: "⭐",
       title: "Reviews",
       desc: "Students who contact you can leave reviews. Build your reputation!",
-      hint: "Dashboard → ⭐ Reviews",
+      hint: "Dashboard → Reviews",
     },
     {
       icon: "🚀",
@@ -99,7 +99,7 @@ const STEPS = {
       hint: "Sidebar → Home",
     },
     {
-      icon: "💰",
+      icon: "Other",
       title: "Fees",
       desc: "View your fee records, check what's due, and see payment instructions from your coaching.",
       hint: "Sidebar → Fees",
@@ -209,7 +209,7 @@ export default function OnboardingTour({ role, uid, onDone }) {
             {cur.icon}
           </div>
           <h2 style={{
-            fontFamily: "Syne, sans-serif", fontSize: 22, fontWeight: 800,
+            fontSize: 22, fontWeight: 800,
             color: "#e8e0ff", marginBottom: 12, lineHeight: 1.25,
           }}>
             {cur.title}
@@ -275,8 +275,8 @@ export default function OnboardingTour({ role, uid, onDone }) {
               flex: 2, padding: "12px",
               border: "none", borderRadius: 12,
               background: isLast
-                ? "linear-gradient(135deg, #22c55e, #16a34a)"
-                : "linear-gradient(135deg, #6c3ff5, #8b82ff)",
+                ? "var(--success)"
+                : "var(--accent)",
               color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer",
               boxShadow: isLast ? "0 4px 20px rgba(34,197,94,0.4)" : "0 4px 20px rgba(108,50,255,0.4)",
               transition: "transform 0.2s, box-shadow 0.2s",

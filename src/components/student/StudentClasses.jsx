@@ -31,7 +31,6 @@ export default function StudentClasses() {
 
       {!loading && classes.length === 0 && (
         <div className="card empty-state">
-          <div className="emoji">📚</div>
           <p>No classes scheduled yet</p>
         </div>
       )}
@@ -45,14 +44,14 @@ export default function StudentClasses() {
             borderRadius: "var(--radius)",
             padding: 18,
           }}>
-            <h3 style={{ fontSize: 17, fontFamily: "Syne, sans-serif", color: COLORS[i % COLORS.length], marginBottom: 10 }}>
+            <h3 style={{ fontSize: 17, color: COLORS[i % COLORS.length], marginBottom: 10 }}>
               {cl.subject}
             </h3>
             <div style={{ fontSize: 13, color: "var(--text2)", lineHeight: 1.9 }}>
-              <div>👨‍🏫 {cl.teacher}</div>
-              <div>📅 {cl.day}</div>
+              <div>{cl.teacher}</div>
+              <div>{cl.day}</div>
               <div>⏰ {cl.time}</div>
-              {cl.room && <div>🏫 Room {cl.room}</div>}
+              {cl.room && <div>Room {cl.room}</div>}
             </div>
           </div>
         ))}
