@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function userRole() {
+      return userDoc().role;
+    }
+
+    function isSuperAdmin() {
+      return signedIn() && userRole() == 'superadmin';
+    }
+
+    function isAdminOf(coachingId) {
+      return signedIn()
+        && userRole() == 'admin'
+        && userDoc().coachingId == coachingId;
+    }
+
+    function isStudentEnrolled(coachingId) {
+      let u = userDoc();
+      return signedIn() && userRole() == 'student' && (
+        u.coachingId == coachingId
+        || ('coachingIds' in u && coachingId in u.coachingIds)
+      );
+    }
+
+    function canReadCoaching(coachingId) {
+      return isAdminOf(coachingId) || isStudentEnrolled(coachingId) || isSuperAdmin();
+    }
+
+    // ── Users ──────────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.auth.uid == userId;
+      allow update: if signedIn() && (
+        request.auth.uid == userId
+        || userRole() == 'admin'
+        || isSuperAdmin()
+      );
+      allow delete: if isSuperAdmin();
+    }
+
+    // ── Coachings + subcollections ─────────────────────────
+    match /coachings/{coachingId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if isAdminOf(coachingId) || isSuperAdmin();
+
+      match /joinRequests/{requestId} {
+        allow read: if isAdminOf(coachingId)
+          || (signedIn() && resource.data.studentId == request.auth.uid);
+        allow create: if signedIn()
+          && request.resource.data.studentId == request.auth.uid;
+        allow update, delete: if isAdminOf(coachingId) || isSuperAdmin();
+      }
+
+      match /{subcollection}/{docId} {
+        allow read: if canReadCoaching(coachingId);
+        allow write: if isAdminOf(coachingId) || isSuperAdmin()
+          || (isStudentEnrolled(coachingId) && subcollection in [
+            'homework', 'testAttempts', 'reviews', 'fees', 'transactions'
+          ]);
+      }
+    }
+
+    // ── Tutors ─────────────────────────────────────────────
+    match /tutors/{tutorId} {
+      allow read: if true;
+      allow write: if signedIn() && (request.auth.uid == tutorId || isSuperAdmin());
+
+      match /{subcollection}/{docId} {
+        allow read: if true;
+        allow write: if signedIn() && (request.auth.uid == tutorId || isSuperAdmin());
+      }
+    }
+  }
+}

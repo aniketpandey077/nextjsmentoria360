@@ -12,7 +12,26 @@ import {
 import {
   ref, uploadBytesResumable, getDownloadURL, deleteObject,
 } from "firebase/storage";
-import { db, storage } from "./firebase";
+import { auth, db, storage } from "./firebase";
+
+/** Approve/reject via server API (Admin SDK) — avoids Firestore permission errors for admins. */
+async function callJoinRequestApi(action, coachingId, requestId, studentId) {
+  const user = auth.currentUser;
+  if (!user) throw new Error("You must be signed in.");
+  const token = await user.getIdToken();
+  const res = await fetch("/api/join-requests", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ action, coachingId, requestId, studentId }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || `Failed to ${action} request.`);
+  }
+}
 
 /* ── USER OPERATIONS ──────────────────────────────────────── */
 
@@ -136,50 +155,12 @@ export async function getJoinRequests(coachingId) {
 
 export async function approveJoinRequest(coachingId, requestId, studentId) {
   assertJoinIds(coachingId, requestId, studentId);
-
-  const coachingRef = doc(db, "coachings", coachingId);
-  const coaching = await getCoaching(coachingId);
-  if (!coaching) throw new Error("Coaching institute not found.");
-
-  const studentProfile = await getUserProfile(studentId);
-  const existing = studentProfile?.coachingIds
-    || (studentProfile?.coachingId ? [studentProfile.coachingId] : []);
-  const pending = studentProfile?.pendingCoachingIds || [];
-  const newCoachingIds = existing.includes(coachingId) ? existing : [...existing, coachingId];
-  const newPending = pending.filter(id => id !== coachingId);
-  const students = coaching.students || [];
-  const newStudents = students.includes(studentId) ? students : [...students, studentId];
-
-  const batch = writeBatch(db);
-  batch.update(doc(db, "coachings", coachingId, "joinRequests", requestId), { status: "approved" });
-  batch.update(coachingRef, { students: newStudents });
-  // merge: true — works even if user doc was missing (update() would fail)
-  batch.set(doc(db, "users", studentId), {
-    coachingIds:        newCoachingIds,
-    coachingId:         newCoachingIds[0] || coachingId,
-    pendingCoachingIds: newPending,
-    status:             "approved",
-    role:               studentProfile?.role || "student",
-  }, { merge: true });
-  await batch.commit();
+  await callJoinRequestApi("approve", coachingId, requestId, studentId);
 }
 
 export async function rejectJoinRequest(coachingId, requestId, studentId) {
   assertJoinIds(coachingId, requestId, studentId);
-
-  const studentProfile = await getUserProfile(studentId);
-  const pending = studentProfile?.pendingCoachingIds || [];
-  const enrolled = studentProfile?.coachingIds
-    || (studentProfile?.coachingId ? [studentProfile.coachingId] : []);
-  const newPending = pending.filter(id => id !== coachingId);
-
-  const batch = writeBatch(db);
-  batch.update(doc(db, "coachings", coachingId, "joinRequests", requestId), { status: "rejected" });
-  batch.set(doc(db, "users", studentId), {
-    pendingCoachingIds: newPending,
-    ...(enrolled.length === 0 && newPending.length === 0 ? { status: "independent" } : {}),
-  }, { merge: true });
-  await batch.commit();
+  await callJoinRequestApi("reject", coachingId, requestId, studentId);
 }
 
 /* ── STUDENT MANAGEMENT ───────────────────────────────────── */
