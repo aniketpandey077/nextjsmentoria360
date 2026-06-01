@@ -92,63 +92,93 @@ export async function searchCoachings(term) {
 
 /* ── JOIN REQUEST OPERATIONS ──────────────────────────────── */
 
+/** Resolve student UID from a join-request document (handles legacy field names). */
+export function getJoinRequestStudentId(request) {
+  return request?.studentId || request?.uid || request?.studentUid || null;
+}
+
+function assertJoinIds(coachingId, requestId, studentId) {
+  if (!coachingId) throw new Error("Missing coaching ID on admin profile.");
+  if (!requestId) throw new Error("Missing join request ID.");
+  if (!studentId) throw new Error("Missing student ID on this request — the student must re-apply.");
+}
+
 export async function createJoinRequest(coachingId, studentData) {
+  const studentId = studentData?.studentId || studentData?.uid;
+  if (!studentId) throw new Error("studentId is required to create a join request.");
   const reqRef = collection(db, "coachings", coachingId, "joinRequests");
   await addDoc(reqRef, {
     ...studentData,
+    studentId,
     status: "pending",
     timestamp: serverTimestamp(),
   });
 }
 
 export async function getJoinRequests(coachingId) {
-  const q = query(
-    collection(db, "coachings", coachingId, "joinRequests"),
-    orderBy("timestamp", "desc")
-  );
-  const snap = await getDocs(q);
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  if (!coachingId) return [];
+  const colRef = collection(db, "coachings", coachingId, "joinRequests");
+  try {
+    const q = query(colRef, orderBy("timestamp", "desc"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    // Missing composite index — fall back to unordered fetch
+    if (err?.code === "failed-precondition") {
+      const snap = await getDocs(colRef);
+      return snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+    }
+    throw err;
+  }
 }
 
 export async function approveJoinRequest(coachingId, requestId, studentId) {
-  const batch = writeBatch(db);
-  batch.update(
-    doc(db, "coachings", coachingId, "joinRequests", requestId),
-    { status: "approved" }
-  );
+  assertJoinIds(coachingId, requestId, studentId);
+
   const coachingRef = doc(db, "coachings", coachingId);
   const coaching = await getCoaching(coachingId);
-  batch.update(coachingRef, {
-    students: [...(coaching.students || []), studentId],
-  });
+  if (!coaching) throw new Error("Coaching institute not found.");
+
   const studentProfile = await getUserProfile(studentId);
-  const existing = studentProfile?.coachingIds || (studentProfile?.coachingId ? [studentProfile.coachingId] : []);
-  const pending  = studentProfile?.pendingCoachingIds || [];
+  const existing = studentProfile?.coachingIds
+    || (studentProfile?.coachingId ? [studentProfile.coachingId] : []);
+  const pending = studentProfile?.pendingCoachingIds || [];
   const newCoachingIds = existing.includes(coachingId) ? existing : [...existing, coachingId];
-  const newPending     = pending.filter(id => id !== coachingId);
-  batch.update(doc(db, "users", studentId), {
+  const newPending = pending.filter(id => id !== coachingId);
+  const students = coaching.students || [];
+  const newStudents = students.includes(studentId) ? students : [...students, studentId];
+
+  const batch = writeBatch(db);
+  batch.update(doc(db, "coachings", coachingId, "joinRequests", requestId), { status: "approved" });
+  batch.update(coachingRef, { students: newStudents });
+  // merge: true — works even if user doc was missing (update() would fail)
+  batch.set(doc(db, "users", studentId), {
     coachingIds:        newCoachingIds,
-    coachingId:         newCoachingIds[0],
+    coachingId:         newCoachingIds[0] || coachingId,
     pendingCoachingIds: newPending,
     status:             "approved",
-  });
+    role:               studentProfile?.role || "student",
+  }, { merge: true });
   await batch.commit();
 }
 
 export async function rejectJoinRequest(coachingId, requestId, studentId) {
-  const batch = writeBatch(db);
-  batch.update(
-    doc(db, "coachings", coachingId, "joinRequests", requestId),
-    { status: "rejected" }
-  );
+  assertJoinIds(coachingId, requestId, studentId);
+
   const studentProfile = await getUserProfile(studentId);
-  const pending  = studentProfile?.pendingCoachingIds || [];
-  const enrolled = studentProfile?.coachingIds || [];
+  const pending = studentProfile?.pendingCoachingIds || [];
+  const enrolled = studentProfile?.coachingIds
+    || (studentProfile?.coachingId ? [studentProfile.coachingId] : []);
   const newPending = pending.filter(id => id !== coachingId);
-  batch.update(doc(db, "users", studentId), {
+
+  const batch = writeBatch(db);
+  batch.update(doc(db, "coachings", coachingId, "joinRequests", requestId), { status: "rejected" });
+  batch.set(doc(db, "users", studentId), {
     pendingCoachingIds: newPending,
     ...(enrolled.length === 0 && newPending.length === 0 ? { status: "independent" } : {}),
-  });
+  }, { merge: true });
   await batch.commit();
 }
 

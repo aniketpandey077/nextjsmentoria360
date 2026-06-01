@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import {
   getCoaching, getJoinRequests, getCoachingFees,
   getTransactions, approveJoinRequest, rejectJoinRequest,
+  getJoinRequestStudentId,
   updateExploreVisibility,
 } from "../../services/firestoreService";
 import { formatCurrency, formatDate, getInitials } from "../../utils/helpers";
@@ -112,6 +113,7 @@ export default function AdminDashboard({ setActive }) {
   const [transactions,  setTransactions]  = useState([]);
   const [studentCount,  setStudentCount]  = useState(0);
   const [loading,       setLoading]       = useState(true);
+  const [actingId,      setActingId]      = useState(null);
 
   const loadData = async () => {
     try {
@@ -134,20 +136,42 @@ export default function AdminDashboard({ setActive }) {
   useEffect(() => { loadData(); }, [profile.coachingId]);
 
   const handleApprove = async (req) => {
+    const studentId = getJoinRequestStudentId(req);
+    if (!profile?.coachingId || !studentId) {
+      toast.error(!studentId ? "Request is missing student ID." : "Institute not linked to your account.");
+      return;
+    }
+    setActingId(req.id);
     try {
-      await approveJoinRequest(profile.coachingId, req.id, req.studentId);
+      await approveJoinRequest(profile.coachingId, req.id, studentId);
       toast.success(`${req.studentName} approved!`);
       setRequests(r => r.filter(x => x.id !== req.id));
       setStudentCount(n => n + 1);
-    } catch { toast.error("Approval failed."); }
+    } catch (err) {
+      console.error("approveJoinRequest:", err);
+      toast.error(err?.message || "Approval failed.");
+    } finally {
+      setActingId(null);
+    }
   };
 
   const handleReject = async (req) => {
+    const studentId = getJoinRequestStudentId(req);
+    if (!profile?.coachingId || !studentId) {
+      toast.error(!studentId ? "Request is missing student ID." : "Institute not linked to your account.");
+      return;
+    }
+    setActingId(req.id);
     try {
-      await rejectJoinRequest(profile.coachingId, req.id, req.studentId);
+      await rejectJoinRequest(profile.coachingId, req.id, studentId);
       toast.success(`${req.studentName}'s request rejected.`);
       setRequests(r => r.filter(x => x.id !== req.id));
-    } catch { toast.error("Rejection failed."); }
+    } catch (err) {
+      console.error("rejectJoinRequest:", err);
+      toast.error(err?.message || "Rejection failed.");
+    } finally {
+      setActingId(null);
+    }
   };
 
   if (loading) return (
@@ -210,8 +234,22 @@ export default function AdminDashboard({ setActive }) {
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button className="btn btn-success btn-sm" onClick={() => handleApprove(r)}>Approve</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleReject(r)}>Reject</button>
+                <button
+                  type="button"
+                  className="btn btn-success btn-sm"
+                  disabled={actingId === r.id}
+                  onClick={() => handleApprove(r)}
+                >
+                  {actingId === r.id ? "…" : "Approve"}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  disabled={actingId === r.id}
+                  onClick={() => handleReject(r)}
+                >
+                  Reject
+                </button>
               </div>
             </div>
           ))}

@@ -6,7 +6,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { getJoinRequests, approveJoinRequest, rejectJoinRequest } from "../../services/firestoreService";
+import {
+  getJoinRequests,
+  approveJoinRequest,
+  rejectJoinRequest,
+  getJoinRequestStudentId,
+} from "../../services/firestoreService";
 import { getInitials, formatDate } from "../../utils/helpers";
 import toast from "react-hot-toast";
 
@@ -15,28 +20,69 @@ export default function AdminRequests() {
   const [requests, setRequests] = useState([]);
   const [loading,  setLoading]  = useState(true);
   const [filter,   setFilter]   = useState("all"); // all | pending | approved | rejected
+  const [actingId, setActingId] = useState(null);
 
   const load = async () => {
-    const r = await getJoinRequests(profile.coachingId);
-    setRequests(r);
-    setLoading(false);
+    if (!profile?.coachingId) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const r = await getJoinRequests(profile.coachingId);
+      setRequests(r);
+    } catch (err) {
+      console.error("getJoinRequests:", err);
+      toast.error(err?.message || "Failed to load requests.");
+    } finally {
+      setLoading(false);
+    }
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [profile?.coachingId]);
 
   const handleApprove = async (req) => {
+    const studentId = getJoinRequestStudentId(req);
+    if (!profile?.coachingId) {
+      toast.error("Your account is not linked to an institute.");
+      return;
+    }
+    if (!studentId) {
+      toast.error("This request has no student ID. Ask the student to submit again.");
+      return;
+    }
+    setActingId(req.id);
     try {
-      await approveJoinRequest(profile.coachingId, req.id, req.studentId);
-      toast.success(`${req.studentName} approved!`);
+      await approveJoinRequest(profile.coachingId, req.id, studentId);
+      toast.success(`${req.studentName || "Student"} approved!`);
       setRequests(rs => rs.map(r => r.id === req.id ? { ...r, status: "approved" } : r));
-    } catch { toast.error("Failed to approve."); }
+    } catch (err) {
+      console.error("approveJoinRequest:", err);
+      toast.error(err?.message || "Failed to approve.");
+    } finally {
+      setActingId(null);
+    }
   };
 
   const handleReject = async (req) => {
+    const studentId = getJoinRequestStudentId(req);
+    if (!profile?.coachingId) {
+      toast.error("Your account is not linked to an institute.");
+      return;
+    }
+    if (!studentId) {
+      toast.error("This request has no student ID. Ask the student to submit again.");
+      return;
+    }
+    setActingId(req.id);
     try {
-      await rejectJoinRequest(profile.coachingId, req.id, req.studentId);
+      await rejectJoinRequest(profile.coachingId, req.id, studentId);
       toast.success("Request rejected.");
       setRequests(rs => rs.map(r => r.id === req.id ? { ...r, status: "rejected" } : r));
-    } catch { toast.error("Failed to reject."); }
+    } catch (err) {
+      console.error("rejectJoinRequest:", err);
+      toast.error(err?.message || "Failed to reject.");
+    } finally {
+      setActingId(null);
+    }
   };
 
   const filtered = filter === "all" ? requests : requests.filter(r => r.status === filter);
@@ -121,8 +167,22 @@ export default function AdminRequests() {
                   <td>
                     {r.status === "pending" && (
                       <div style={{ display: "flex", gap: 8 }}>
-                        <button className="btn btn-success btn-sm" onClick={() => handleApprove(r)}>Approve</button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleReject(r)}>Reject</button>
+                        <button
+                          type="button"
+                          className="btn btn-success btn-sm"
+                          disabled={actingId === r.id}
+                          onClick={() => handleApprove(r)}
+                        >
+                          {actingId === r.id ? "…" : "Approve"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          disabled={actingId === r.id}
+                          onClick={() => handleReject(r)}
+                        >
+                          Reject
+                        </button>
                       </div>
                     )}
                   </td>
