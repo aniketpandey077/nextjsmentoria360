@@ -137,7 +137,7 @@ function SocialProfileSetup({ firebaseUser, preSelectedCoaching, onComplete, onC
               <label className="form-label">Institute Name</label>
               <input value={form.coachingName} onChange={setF("coachingName")} placeholder="e.g. Brilliant Minds Institute" />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="form-grid-2">
               <div className="form-group">
                 <label className="form-label">City</label>
                 <input value={form.city} onChange={setF("city")} placeholder="Delhi" />
@@ -475,7 +475,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
         />
       )}
 
-      <div style={{
+      <div className="auth-screen" style={{
         minHeight: "100vh", display: "flex",
         alignItems: "center", justifyContent: "center",
         background: "transparent", padding: 20,
@@ -492,16 +492,16 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                 ← Back to Home
               </button>
             )}
-            <h1 style={{ fontFamily: "Syne, sans-serif", fontSize: 40, fontWeight: 800, color: "var(--accent2)" }}>
+            <h1 className="auth-screen-title" style={{ fontFamily: "Syne, sans-serif", fontSize: 40, fontWeight: 800, color: "var(--accent2)" }}>
               Mentoria360
-              </h1>
+            </h1>
             <p style={{ color: "var(--text2)", fontSize: 13, marginTop: 4 }}>
               Coaching &amp; Tutor Discovery Platform
             </p>
           </div>
 
           {/* Card */}
-          <div className="card" style={{ borderRadius: "var(--radius-lg)", padding: "32px 36px" }}>
+          <div className="card auth-screen-card" style={{ borderRadius: "var(--radius-lg)", padding: "32px 36px" }}>
             {/* Tabs */}
             <div className="tab-bar">
               <button className={`tab${tab === "login"    ? " active" : ""}`} onClick={() => switchTab("login")}>Sign In</button>
@@ -677,7 +677,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                 {/* Admin form */}
                 {regRole === "admin" && (
                   <>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div className="form-grid-2">
                       <div className="form-group">
                         <label className="form-label">Full Name</label>
                         <input placeholder="Your name" value={form.name} onChange={set("name")} />
@@ -700,7 +700,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                       <label className="form-label">Full Address</label>
                       <input placeholder="Street, Area, Landmark" value={form.address} onChange={set("address")} />
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div className="form-grid-2">
                       <div className="form-group">
                         <label className="form-label">City *</label>
                         <input placeholder="Delhi" value={form.city} onChange={set("city")} />
@@ -710,7 +710,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                         <input placeholder="Delhi" value={form.state} onChange={set("state")} />
                       </div>
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div className="form-grid-2">
                       <div className="form-group">
                         <label className="form-label">Pincode</label>
                         <input placeholder="110001" value={form.pincode} onChange={set("pincode")} />
@@ -720,7 +720,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                         <input type="number" placeholder="e.g. 10" value={form.yearsExp} onChange={set("yearsExp")} min={0} />
                       </div>
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div className="form-grid-2">
                       <div className="form-group">
                         <label className="form-label">Subject Focus</label>
                         <input placeholder="IIT-JEE / NEET" value={form.subject} onChange={set("subject")} />
@@ -754,7 +754,7 @@ export default function AuthScreen({ initialTab = "login", initialRegRole = "stu
                       <label className="form-label">Password</label>
                       <input type="password" placeholder="Min. 6 characters" value={form.password} onChange={set("password")} />
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div className="form-grid-2">
                       <div className="form-group">
                         <label className="form-label">Phone</label>
                         <input placeholder="9876543210" value={form.phone} onChange={set("phone")} />

@@ -76,12 +76,12 @@ export default function AdminStudents() {
       </div>
 
       <div className="card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, gap: 12 }}>
+        <div className="page-toolbar">
           <div className="search-wrap" style={{ flex: 1, maxWidth: 300 }}>
             <span className="search-icon"><Icon name="search" size={14} /></span>
             <input placeholder="Search students..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div className="page-toolbar-actions">
             <button
               className="btn btn-secondary btn-sm"
               onClick={() => exportToCSV(students.map(s => ({ Name: s.name, Email: s.email, Status: s.isOffline ? "Offline" : "Enrolled" })), "students")}
@@ -107,11 +107,12 @@ export default function AdminStudents() {
         )}
 
         {!loading && filtered.length > 0 && (
-          <table>
+          <div className="table-wrap">
+          <table className="table-mobile-cards">
             <thead>
               <tr>
                 <th>Student</th>
-                <th>Email</th>
+                <th className="hide-mobile">Email</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -119,21 +120,21 @@ export default function AdminStudents() {
             <tbody>
               {filtered.map(s => (
                 <tr key={s.id}>
-                  <td>
+                  <td data-label="Student">
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <div className="avatar">{getInitials(s.name)}</div>
                       <span style={{ fontWeight: 500 }}>{s.name}</span>
                     </div>
                   </td>
-                  <td style={{ color: "var(--text2)" }}>{s.email}</td>
-                  <td>
+                  <td className="hide-mobile" data-label="Email" style={{ color: "var(--text2)" }}>{s.email}</td>
+                  <td data-label="Status">
                     {s.isOffline ? (
                       <span className="badge" style={{ background: "#475569", color: "#fff" }}>Offline</span>
                     ) : (
                       <span className="badge badge-approved">Enrolled</span>
                     )}
                   </td>
-                  <td>
+                  <td data-label="Action" className="td-actions">
                     <button className="btn btn-danger btn-sm" onClick={() => handleRemove(s)}>
                       <Icon name="trash" size={12} /> Remove
                     </button>
@@ -142,6 +143,7 @@ export default function AdminStudents() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

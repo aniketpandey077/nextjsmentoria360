@@ -140,6 +140,15 @@ export function AuthProvider({ children }) {
     provider.addScope("email");
     provider.addScope("profile");
 
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+
+    if (isTouchDevice) {
+      await signInWithRedirect(auth, provider);
+      return { redirecting: true };
+    }
+
     try {
       const result = await signInWithPopup(auth, provider);
       const firebaseUser = result.user;

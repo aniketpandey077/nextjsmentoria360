@@ -225,15 +225,15 @@ export default function AdminDashboard({ setActive }) {
             <span className="badge badge-pending">{requests.length} pending</span>
           </div>
           {requests.map(r => (
-            <div key={r.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <div key={r.id} className="stack-mobile" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid var(--border)", gap: 12 }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", flex: 1, minWidth: 0 }}>
                 <div className="avatar">{getInitials(r.studentName)}</div>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 500 }}>{r.studentName}</div>
                   <div style={{ fontSize: 11, color: "var(--text3)" }}>{r.studentEmail} · {formatDate(r.timestamp)}</div>
                 </div>
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ display: "flex", gap: 8, flexShrink: 0, flexWrap: "wrap" }}>
                 <button
                   type="button"
                   className="btn btn-success btn-sm"

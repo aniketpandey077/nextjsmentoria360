@@ -5,7 +5,7 @@
 // No external HTML canvas needed – builds receipt programmatically.
 // ============================================================
 
-import React, { useRef } from "react";
+import React from "react";
 import { jsPDF } from "jspdf";
 import toast from "react-hot-toast";
 
@@ -146,15 +146,11 @@ export default function FeeReceipt({ fee, coachingName, coachingCity, onClose })
   };
 
   return (
-    <div style={{
-      position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      zIndex: 1000, backdropFilter: "blur(4px)",
-    }}>
-      <div style={{
-        background: "var(--bg2)", borderRadius: 16, width: "100%", maxWidth: 480,
-        border: "1px solid var(--border)", overflow: "hidden", boxShadow: "0 25px 50px rgba(0,0,0,0.4)",
-      }}>
+    <div className="modal-overlay" style={{ zIndex: 1000 }}>
+      <div className="modal fee-receipt-panel card fade-in" style={{
+        maxWidth: 480, padding: 0, overflow: "hidden",
+        boxShadow: "0 25px 50px rgba(0,0,0,0.4)",
+      }} onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div style={{ background: "var(--accent)", padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
@@ -176,7 +172,7 @@ export default function FeeReceipt({ fee, coachingName, coachingCity, onClose })
             <div style={{ fontSize: 12, color: "var(--text3)", marginTop: 2 }}>{coachingCity}</div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+          <div className="form-grid-2" style={{ marginBottom: 20 }}>
             {[
               ["Student", fee.studentName],
               ["Month", fee.month],
@@ -192,19 +188,19 @@ export default function FeeReceipt({ fee, coachingName, coachingCity, onClose })
 
           {/* Amount table */}
           <div style={{ background: "var(--bg3)", borderRadius: 10, overflow: "hidden", marginBottom: 20, border: "1px solid var(--border)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "10px 14px", borderBottom: "1px solid var(--border)", fontSize: 10, color: "var(--text3)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              <span>Total</span><span style={{ textAlign: "center" }}>Paid</span><span style={{ textAlign: "right" }}>Due</span>
+            <div className="fee-receipt-amounts" style={{ padding: "10px 14px", borderBottom: "1px solid var(--border)", fontSize: 10, color: "var(--text3)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <span>Total</span><span>Paid</span><span>Due</span>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "12px 14px", fontSize: 15, fontWeight: 700 }}>
+            <div className="fee-receipt-amounts" style={{ padding: "12px 14px", fontSize: 15, fontWeight: 700 }}>
               <span>₹{(fee.amount || 0).toLocaleString("en-IN")}</span>
-              <span style={{ textAlign: "center", color: "var(--green)" }}>₹{(fee.paid || 0).toLocaleString("en-IN")}</span>
-              <span style={{ textAlign: "right", color: fee.due > 0 ? "var(--red)" : "var(--green)" }}>
+              <span style={{ color: "var(--green)" }}>₹{(fee.paid || 0).toLocaleString("en-IN")}</span>
+              <span style={{ color: fee.due > 0 ? "var(--red)" : "var(--green)" }}>
                 ₹{(fee.due || 0).toLocaleString("en-IN")}
               </span>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 10 }}>
+          <div className="fee-receipt-actions">
             <button className="btn btn-primary" style={{ flex: 1 }} onClick={downloadPDF}>
               ⬇️ Download PDF
             </button>

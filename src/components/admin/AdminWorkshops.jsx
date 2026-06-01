@@ -104,7 +104,7 @@ export default function AdminWorkshops() {
           <label className="form-label">Description</label>
           <textarea rows={2} placeholder="Brief description..." value={form.description} onChange={set("description")} style={{ resize: "vertical" }} />
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Date *</label>
             <input type="date" value={form.date} onChange={set("date")} />
@@ -114,7 +114,7 @@ export default function AdminWorkshops() {
             <input placeholder="9:00 AM" value={form.time} onChange={set("time")} />
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Total Seats</label>
             <input type="number" placeholder="60" value={form.seats} onChange={set("seats")} />

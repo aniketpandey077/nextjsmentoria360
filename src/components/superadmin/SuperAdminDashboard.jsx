@@ -99,7 +99,7 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
         </div>
 
         {/* Key Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
+        <div className="grid-3" style={{ marginBottom: 20 }}>
           {[
             { label: "Students", value: coaching.students?.length || 0, color: "var(--green)", icon: "🎓" },
             { label: "Subject", value: coaching.subject || "—", color: "var(--text)", icon: "📚" },
@@ -261,7 +261,7 @@ export default function SuperAdminDashboard({ active }) {
         </div>
 
         {/* Quick Insights */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+        <div className="grid-2" style={{ marginBottom: 20 }}>
           {/* Top institutes by student count */}
           <div className="card">
             <h3 style={{ fontSize: 14, marginBottom: 16, color: "var(--text2)" }}>🏆 Top Institutes by Students</h3>
@@ -321,7 +321,8 @@ export default function SuperAdminDashboard({ active }) {
           {recentCoachings.length === 0 && (
             <div className="empty-state"><div className="emoji">🏫</div><p>No institutes yet</p></div>
           )}
-          <table>
+          <div className="table-wrap">
+          <table className="table-mobile-cards">
             <thead>
               <tr>
                 <th>Institute</th>
@@ -334,13 +335,13 @@ export default function SuperAdminDashboard({ active }) {
             <tbody>
               {recentCoachings.map(c => (
                 <tr key={c.id} style={{ cursor: "pointer" }} onClick={() => setSelected(c)}>
-                  <td style={{ fontWeight: 600 }}>{c.name}</td>
-                  <td style={{ color: "var(--text2)" }}>{c.city || "—"}</td>
-                  <td>
+                  <td data-label="Institute" style={{ fontWeight: 600 }}>{c.name}</td>
+                  <td data-label="City" style={{ color: "var(--text2)" }}>{c.city || "—"}</td>
+                  <td data-label="Focus">
                     {c.subject ? <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 20, background: "var(--accent-bg)", color: "var(--accent)" }}>{c.subject}</span> : "—"}
                   </td>
-                  <td style={{ fontWeight: 600, color: "var(--green)" }}>{(c.students || []).length}</td>
-                  <td>
+                  <td data-label="Students" style={{ fontWeight: 600, color: "var(--green)" }}>{(c.students || []).length}</td>
+                  <td data-label="Explore">
                     <span style={{ fontSize: 11, fontWeight: 700, color: c.showInExplore !== false ? "var(--green)" : "var(--red)" }}>
                       {c.showInExplore !== false ? "🟢 Visible" : "🔴 Hidden"}
                     </span>
@@ -349,6 +350,7 @@ export default function SuperAdminDashboard({ active }) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         {selected && (
@@ -571,7 +573,8 @@ export default function SuperAdminDashboard({ active }) {
           {filtered.length === 0 && (
             <div className="empty-state"><div className="emoji">👥</div><p>No users found</p></div>
           )}
-          <table>
+          <div className="table-wrap">
+          <table className="table-mobile-cards">
             <thead>
               <tr>
                 <th>Name</th>
@@ -590,7 +593,7 @@ export default function SuperAdminDashboard({ active }) {
 
                 return (
                   <tr key={u.id}>
-                    <td>
+                    <td data-label="Name">
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <div style={{
                           width: 30, height: 30, borderRadius: "50%",
@@ -603,8 +606,8 @@ export default function SuperAdminDashboard({ active }) {
                         <span style={{ fontWeight: 500, fontSize: 13 }}>{u.name || "—"}</span>
                       </div>
                     </td>
-                    <td style={{ color: "var(--text2)", fontSize: 12 }}>{u.email || u.phone || "—"}</td>
-                    <td>
+                    <td data-label="Contact" style={{ color: "var(--text2)", fontSize: 12 }}>{u.email || u.phone || "—"}</td>
+                    <td data-label="Role">
                       <span style={{
                         fontSize: 10, padding: "3px 10px", borderRadius: 20, fontWeight: 700,
                         background: (ROLE_COLOR[u.role] || "var(--accent)") + "22",
@@ -614,8 +617,8 @@ export default function SuperAdminDashboard({ active }) {
                         {u.role}
                       </span>
                     </td>
-                    <td><span className={`badge badge-${statusBadge}`}>{u.status || "active"}</span></td>
-                    <td style={{ color: "var(--text2)", fontSize: 12 }}>
+                    <td data-label="Status"><span className={`badge badge-${statusBadge}`}>{u.status || "active"}</span></td>
+                    <td data-label="Institute" style={{ color: "var(--text2)", fontSize: 12 }}>
                       {coaching?.name || (u.coachingId ? "Unknown" : "—")}
                     </td>
                   </tr>
@@ -623,6 +626,7 @@ export default function SuperAdminDashboard({ active }) {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     );

@@ -154,7 +154,7 @@ export default function AdminMaterials() {
           <label className="form-label">Title *</label>
           <input placeholder="e.g. Chapter 5 – Thermodynamics Notes" value={form.title} onChange={set("title")} />
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Subject</label>
             <select value={form.subject} onChange={set("subject")}>

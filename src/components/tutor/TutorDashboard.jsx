@@ -159,7 +159,7 @@ export default function TutorDashboard() {
             Tutor Profile — Visible to Students
           </h3>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Full Name *</label>
               <input value={form.name} onChange={set("name")} placeholder="Your name" />
@@ -213,7 +213,7 @@ export default function TutorDashboard() {
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+          <div className="form-grid-3">
             <div className="form-group">
               <label className="form-label">City</label>
               <input value={form.city} onChange={set("city")} placeholder="Delhi" />

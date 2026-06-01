@@ -374,7 +374,8 @@ export default function StudentFees() {
         )}
 
         {!loading && fees.length > 0 && (
-          <table>
+          <div className="table-wrap">
+          <table className="table-mobile-cards">
             <thead>
               <tr>
                 <th>Month</th>
@@ -388,20 +389,20 @@ export default function StudentFees() {
             <tbody>
               {fees.map(f => (
                 <tr key={f.id}>
-                  <td style={{ fontWeight: 600 }}>{f.month} {f.year}</td>
-                  <td>{formatCurrency(f.amount)}</td>
-                  <td style={{ color: "var(--green)", fontWeight: 600 }}>{formatCurrency(f.paid)}</td>
-                  <td style={{ color: f.due > 0 ? "var(--amber)" : "var(--text3)", fontWeight: f.due > 0 ? 700 : 400 }}>
+                  <td data-label="Month" style={{ fontWeight: 600 }}>{f.month} {f.year}</td>
+                  <td data-label="Amount">{formatCurrency(f.amount)}</td>
+                  <td data-label="Paid" style={{ color: "var(--green)", fontWeight: 600 }}>{formatCurrency(f.paid)}</td>
+                  <td data-label="Due" style={{ color: f.due > 0 ? "var(--amber)" : "var(--text3)", fontWeight: f.due > 0 ? 700 : 400 }}>
                     {formatCurrency(f.due)}
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={`badge badge-${
                       f.status === "paid"    ? "approved" :
                       f.status === "partial" ? "pending"  : "rejected"
                     }`}>{f.status}</span>
                   </td>
-                  <td>
-                    <div style={{ display: "flex", gap: 6 }}>
+                  <td data-label="Action" className="td-actions">
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                       {f.due > 0 && (
                         <button
                           className="btn btn-primary btn-sm"
@@ -427,6 +428,7 @@ export default function StudentFees() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

@@ -160,7 +160,7 @@ export default function AdminHomework() {
             style={{ resize: "vertical", width: "100%", fontFamily: "inherit", fontSize: 13, padding: "10px 12px", background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 8, color: "var(--text)" }}
           />
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Subject</label>
             <select value={form.subject} onChange={set("subject")}>

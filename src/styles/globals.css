@@ -242,8 +242,186 @@ tbody tr:hover td { background: var(--bg3); }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 @media (max-width: 768px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stat-value { font-size: 22px; }
+  .page-header h2 { font-size: 20px; }
+  .card { padding: 16px; }
+
+  /* Touch targets */
+  .btn-sm { min-height: 44px; padding: 10px 16px; font-size: 14px; }
+  .btn { min-height: 44px; }
+  .mobile-tab-btn { min-height: 48px; }
+  .nav-item { min-height: 44px; padding: 12px 20px; }
+
+  /* Prevent iOS zoom on input focus */
+  input, select, textarea { font-size: 16px; }
+
+  /* Layout utilities */
+  .stack-mobile { flex-direction: column !important; align-items: stretch !important; }
+  .full-width-mobile { width: 100% !important; }
+  .hide-mobile { display: none !important; }
+
+  .page-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .page-toolbar-actions {
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .page-toolbar-actions .btn { width: 100%; }
+
+  .filter-chips { overflow-x: auto; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .filter-chips button { flex-shrink: 0; min-height: 40px; }
+
+  .form-grid-2 { grid-template-columns: 1fr !important; }
+  .form-grid-3 { grid-template-columns: 1fr !important; }
+
+  /* Tables — card layout on mobile */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; }
+  .table-wrap .table-mobile-cards thead { display: none; }
+  .table-wrap .table-mobile-cards tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    padding: 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+  .table-wrap .table-mobile-cards tbody tr:hover td { background: transparent; }
+  .table-wrap .table-mobile-cards td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: none;
+    font-size: 14px;
+  }
+  .table-wrap .table-mobile-cards td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .table-wrap .table-mobile-cards td[data-label=""]::before,
+  .table-wrap .table-mobile-cards td:not([data-label])::before { display: none; }
+  .table-wrap .table-mobile-cards td.td-actions {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+  .table-wrap .table-mobile-cards td.td-actions::before { display: none; }
+  .table-wrap .table-mobile-cards td.td-actions .btn { width: 100%; }
+
+  /* Modals — bottom sheet */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal {
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0;
+    max-height: 92vh;
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Auth */
+  .auth-screen { padding: 12px !important; align-items: flex-start !important; min-height: 100dvh !important; }
+  .auth-screen-card { padding: 24px 18px !important; }
+  .auth-screen-title { font-size: 32px !important; }
+
+  /* Coaching chips */
+  .coaching-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .coaching-chips button { flex-shrink: 0; min-height: 44px; }
+
+  /* WhatsApp FAB — above bottom nav */
+  .whatsapp-fab {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* Sticky action bar (attendance save, etc.) */
+  .sticky-action-bar {
+    position: fixed;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    left: 0;
+    right: 0;
+    padding: 12px 14px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    z-index: 140;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .sticky-action-bar-spacer { display: block; height: 72px; }
+
+  /* Attendance rows */
+  .attendance-row { flex-wrap: wrap; gap: 10px; }
+  .attendance-row button { min-height: 44px; min-width: 96px; }
+
+  /* Fee receipt modal */
+  .fee-receipt-panel { max-width: calc(100% - 24px) !important; margin: 12px; }
+  .fee-receipt-actions { flex-direction: column; }
+  .fee-receipt-actions .btn { width: 100%; min-height: 44px; }
+}
+
+/* ── Page toolbar (search + actions row) ─────────────────────── */
+.page-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.page-toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-chips { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.sticky-action-bar { margin-top: 20px; }
+.sticky-action-bar-spacer { display: none; }
+.coaching-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.whatsapp-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+}
+
+.fee-receipt-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.fee-receipt-amounts { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.fee-receipt-amounts > span:nth-child(2) { text-align: center; }
+.fee-receipt-amounts > span:nth-child(3) { text-align: right; }
+
+@media (max-width: 768px) {
+  .fee-receipt-amounts { grid-template-columns: 1fr; gap: 8px; }
+  .fee-receipt-amounts > span:nth-child(2),
+  .fee-receipt-amounts > span:nth-child(3) { text-align: left; }
 }
 
 /* ── Page Header ─────────────────────────────────────────────── */
@@ -342,7 +520,7 @@ tbody tr:hover td { background: var(--bg3); }
 .landing-mobile-tabs { display: none; background: var(--bg2); border-bottom: 1px solid var(--border); }
 
 @media (max-width: 600px) {
-  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-wrap:not(.table-mobile-cards) table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 @media (max-width: 640px) {
   .landing-mobile-tabs { display: flex !important; }

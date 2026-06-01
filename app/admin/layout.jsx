@@ -48,13 +48,8 @@ export default function AdminLayout({ children }) {
           href={`https://wa.me/${profile.whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            position: "fixed", bottom: 24, right: 24, zIndex: 100,
-            background: "#25d366", color: "#fff", borderRadius: "50%",
-            width: 52, height: 52, display: "flex", alignItems: "center",
-            justifyContent: "center", fontSize: 22, textDecoration: "none",
-            boxShadow: "0 4px 20px rgba(37,211,102,0.4)",
-          }}
+          className="whatsapp-fab"
+          aria-label="Contact on WhatsApp"
         >
           💬
         </a>

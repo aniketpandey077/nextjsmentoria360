@@ -173,7 +173,7 @@ export default function AdminAttendance() {
               const status = records[s.id] || "present";
               const style  = STATUS_STYLE[status];
               return (
-                <div key={s.id} style={{
+                <div key={s.id} className="attendance-row" style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                   padding: "12px 0", borderBottom: "1px solid var(--border)",
                 }}>
@@ -202,14 +202,17 @@ export default function AdminAttendance() {
               );
             })}
 
-            <button
-              className="btn btn-primary"
-              style={{ marginTop: 20, width: "100%" }}
-              onClick={handleSave}
-              disabled={saving}
-            >
-              {saving ? <span className="spinner" /> : `💾 Save Attendance for ${date}`}
-            </button>
+            <div className="sticky-action-bar-spacer" />
+            <div className="sticky-action-bar">
+              <button
+                className="btn btn-primary"
+                style={{ width: "100%" }}
+                onClick={handleSave}
+                disabled={saving}
+              >
+                {saving ? <span className="spinner" /> : `💾 Save Attendance for ${date}`}
+              </button>
+            </div>
           </>
         )}
       </div>

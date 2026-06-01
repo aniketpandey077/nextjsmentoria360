@@ -97,7 +97,7 @@ export default function AdminClasses() {
       </div>
 
       <Modal isOpen={showAdd} onClose={() => setShowAdd(false)} title="Add Class">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Subject *</label>
             <input placeholder="e.g. Physics" value={form.subject} onChange={set("subject")} />
@@ -107,7 +107,7 @@ export default function AdminClasses() {
             <input placeholder="Dr. Kapoor" value={form.teacher} onChange={set("teacher")} />
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Days</label>
             <input placeholder="Mon/Wed/Fri" value={form.day} onChange={set("day")} />

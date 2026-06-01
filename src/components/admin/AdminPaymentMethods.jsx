@@ -208,7 +208,7 @@ export default function AdminPaymentMethods({ entityType = "coaching" }) {
                   <label className="form-label">Bank Name</label>
                   <input value={form.bankName} onChange={set("bankName")} placeholder="e.g. SBI" />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="form-grid-2">
                   <div className="form-group">
                     <label className="form-label">Account Number</label>
                     <input value={form.accountNo} onChange={set("accountNo")} placeholder="1234567890" />

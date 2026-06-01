@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#6c3ff5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08061a"/>
+      <stop offset="100%" stop-color="#0d0824"/>
+    </linearGradient>
+    <linearGradient id="letter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0d8ff"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="220" r="200" fill="url(#glow)"/>
+  <rect width="512" height="512" rx="112" fill="none" stroke="rgba(139,130,255,0.45)" stroke-width="8"/>
+  <text
+    x="256"
+    y="320"
+    font-family="Syne, Arial Black, sans-serif"
+    font-size="260"
+    font-weight="900"
+    text-anchor="middle"
+    fill="url(#letter)"
+  >M</text>
+  <path d="M 140 400 Q 256 430 372 400" stroke="rgba(139,130,255,0.55)" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>

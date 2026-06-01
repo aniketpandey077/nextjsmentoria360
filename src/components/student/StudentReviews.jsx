@@ -121,7 +121,7 @@ export default function StudentReviews() {
           )}
 
           {selected && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div className="form-grid-2" style={{ gap: 20 }}>
               {/* Write review */}
               <div>
                 <div className="card">

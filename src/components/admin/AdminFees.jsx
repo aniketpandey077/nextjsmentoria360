@@ -164,9 +164,9 @@ export default function AdminFees() {
       </div>
 
       <div className="card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <div className="page-toolbar">
           <span style={{ fontSize: 13, color: "var(--text2)" }}>{fees.length} fee records</span>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div className="page-toolbar-actions">
             <button className="btn btn-secondary btn-sm"
               onClick={() => exportToCSV(fees.map(f => ({ Student: f.studentName, Month: f.month, Amount: f.amount, Paid: f.paid, Due: f.due, Status: f.status })), "fees")}>
               <Icon name="download" size={12} /> Export
@@ -184,7 +184,8 @@ export default function AdminFees() {
         )}
 
         {!loading && fees.length > 0 && (
-          <table>
+          <div className="table-wrap">
+          <table className="table-mobile-cards">
             <thead>
               <tr>
                 <th>Student</th>
@@ -199,32 +200,35 @@ export default function AdminFees() {
             <tbody>
               {fees.map(f => (
                 <tr key={f.id}>
-                  <td style={{ fontWeight: 500 }}>{f.studentName}</td>
-                  <td style={{ color: "var(--text2)" }}>{f.month}</td>
-                  <td>{formatCurrency(f.amount)}</td>
-                  <td style={{ color: "var(--green)" }}>{formatCurrency(f.paid)}</td>
-                  <td style={{ color: f.due > 0 ? "var(--red)" : "var(--text3)" }}>{formatCurrency(f.due)}</td>
-                  <td>
+                  <td data-label="Student" style={{ fontWeight: 500 }}>{f.studentName}</td>
+                  <td data-label="Month" style={{ color: "var(--text2)" }}>{f.month}</td>
+                  <td data-label="Amount">{formatCurrency(f.amount)}</td>
+                  <td data-label="Paid" style={{ color: "var(--green)" }}>{formatCurrency(f.paid)}</td>
+                  <td data-label="Due" style={{ color: f.due > 0 ? "var(--red)" : "var(--text3)" }}>{formatCurrency(f.due)}</td>
+                  <td data-label="Status">
                     <span className={`badge badge-${
                       f.status === "paid" ? "approved" : f.status === "partial" ? "pending" : "rejected"
                     }`}>{f.status}</span>
                   </td>
-                  <td>
+                  <td data-label="Action" className="td-actions">
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                     {f.due > 0 && (
                       <button className="btn btn-success btn-sm" onClick={() => handleMarkPaid(f)}>
                         Mark Paid
                       </button>
                     )}
                     {f.paid > 0 && (
-                      <button className="btn btn-secondary btn-sm" style={{ marginLeft: 6 }} onClick={() => setReceipt(f)}>
+                      <button className="btn btn-secondary btn-sm" onClick={() => setReceipt(f)}>
                         🧾 Receipt
                       </button>
                     )}
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
@@ -232,7 +236,7 @@ export default function AdminFees() {
       <Modal isOpen={showAdd} onClose={() => { setShowAdd(false); resetAddForm(); }} title="Add Fee Record">
 
         {/* Month + Year */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+        <div className="form-grid-2" style={{ marginBottom: 16 }}>
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">Month *</label>
             <select value={month} onChange={e => setMonth(e.target.value)}>

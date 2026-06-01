@@ -11,15 +11,7 @@ export default function StudentCoachingBar() {
   const active = coachings.find((c) => c.id === activeCoachingId);
 
   return (
-    <div
-      style={{
-        marginBottom: 20,
-        padding: "14px 16px",
-        background: "var(--bg2)",
-        border: "1px solid var(--border)",
-        borderRadius: 12,
-      }}
-    >
+    <div className="card" style={{ marginBottom: 20, padding: "14px 16px" }}>
       <div style={{
         fontSize: 11,
         color: "var(--text3)",
@@ -29,7 +21,7 @@ export default function StudentCoachingBar() {
       }}>
         Active institute{active ? `: ${active.name}` : ""}
       </div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div className="coaching-chips">
         {coachings.map((c) => (
           <button
             key={c.id}

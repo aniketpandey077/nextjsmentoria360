@@ -199,7 +199,7 @@ export default function AdminTests() {
           <label className="form-label">Test Title *</label>
           <input placeholder="e.g. Chapter 3 Mock Test" value={form.title} onChange={setField("title")} />
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <div className="form-grid-3">
           <div className="form-group">
             <label className="form-label">Subject</label>
             <select value={form.subject} onChange={setField("subject")}>

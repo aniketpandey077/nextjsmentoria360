@@ -245,7 +245,7 @@ export default function AdminBatches() {
           <input value={form.name} onChange={set("name")} placeholder="e.g. Morning Batch A" />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Subject</label>
             <input value={form.subject} onChange={set("subject")} placeholder="e.g. IIT-JEE, Maths" />
@@ -274,7 +274,7 @@ export default function AdminBatches() {
         </div>
 
         {/* Time range */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="form-grid-2">
           <div className="form-group">
             <label className="form-label">Start Time</label>
             <input type="time" value={form.startTime} onChange={set("startTime")} />
