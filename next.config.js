@@ -12,6 +12,21 @@ const nextConfig = {
       },
     ],
   },
+  // Firebase Google signInWithPopup needs to read popup window state.
+  // Without this, browsers log COOP errors for window.closed / window.close.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
