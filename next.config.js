@@ -1,3 +1,9 @@
+const path = require("path");
+const { loadEnvConfig } = require("@next/env");
+
+// Ensure .env.local is loaded before Next reads config (Firebase Admin vars).
+loadEnvConfig(path.join(__dirname));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
