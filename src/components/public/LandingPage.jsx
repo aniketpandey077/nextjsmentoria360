@@ -108,6 +108,7 @@ const VALUE_PROPS = [
 export default function LandingPage({ onShowAuth, preSelectCoaching }) {
   const [view, setView] = useState("home");
   const [query, setQuery] = useState("");
+  const [showScrollHint, setShowScrollHint] = useState(true);
   const [results, setResults] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [tutors, setTutors] = useState([]);
@@ -116,6 +117,12 @@ export default function LandingPage({ onShowAuth, preSelectCoaching }) {
   const [activeTemplate, setActiveTemplate] = useState(0);
   const exploreLoaded = useRef(false);
   const scrollRef = useRef(null);
+
+  const handleTabScroll = useCallback((e) => {
+    if (e.target.scrollLeft > 15) {
+      setShowScrollHint(false);
+    }
+  }, []);
 
   const loadExploreData = useCallback(() => {
     if (exploreLoaded.current) return;
@@ -195,7 +202,10 @@ export default function LandingPage({ onShowAuth, preSelectCoaching }) {
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <button type="button" className="btn btn-secondary btn-sm hide-mobile" onClick={openExplore}>Browse Institutes</button>
             <button type="button" className="btn btn-secondary btn-sm" onClick={() => onShowAuth("login")}>Sign In</button>
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => onShowAuth("register")}>Get Started Free</button>
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => onShowAuth("register")}>
+              <span className="lp-nav-btn-text-desktop">Get Started Free</span>
+              <span className="lp-nav-btn-text-mobile">Start Free</span>
+            </button>
           </div>
         </div>
       </nav>
@@ -260,26 +270,34 @@ export default function LandingPage({ onShowAuth, preSelectCoaching }) {
             Browse through every major screen. What you see here is exactly what admins and students use every day.
           </p>
 
-          {/* Tab strip — scrollable */}
-          <div className="tpl-tab-strip" ref={scrollRef}>
-            {TEMPLATES.map((t, i) => (
-              <button
-                key={t.id}
-                type="button"
-                className={`tpl-tab ${activeTemplate === i ? "tpl-tab-active" : ""}`}
-                onClick={() => setActiveTemplate(i)}
-                style={activeTemplate === i ? { "--tpl-color": t.roleColor } : {}}
-              >
-                <span className="tpl-tab-emoji">{t.emoji}</span>
-                <span className="tpl-tab-label">{t.label}</span>
-                <span
-                  className="tpl-tab-role"
-                  style={{ color: t.roleColor, background: `${t.roleColor}18` }}
+          {/* Tab strip wrapper with scroll hint */}
+          <div style={{ position: "relative" }}>
+            <div className="tpl-tab-strip" ref={scrollRef} onScroll={handleTabScroll}>
+              {TEMPLATES.map((t, i) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={`tpl-tab ${activeTemplate === i ? "tpl-tab-active" : ""}`}
+                  onClick={() => setActiveTemplate(i)}
+                  style={activeTemplate === i ? { "--tpl-color": t.roleColor } : {}}
                 >
-                  {t.role}
-                </span>
-              </button>
-            ))}
+                  <span className="tpl-tab-emoji">{t.emoji}</span>
+                  <span className="tpl-tab-label">{t.label}</span>
+                  <span
+                    className="tpl-tab-role"
+                    style={{ color: t.roleColor, background: `${t.roleColor}18` }}
+                  >
+                    {t.role}
+                  </span>
+                </button>
+              ))}
+            </div>
+            {showScrollHint && (
+              <div className="tpl-scroll-indicator-arrow">
+                <span>Swipe</span>
+                <span className="indicator-arrow-icon">→</span>
+              </div>
+            )}
           </div>
 
           {/* Main preview area */}
