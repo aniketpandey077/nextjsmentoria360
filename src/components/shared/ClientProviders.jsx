@@ -4,6 +4,7 @@
 // Kept separate from app/layout.jsx so that layout can be a
 // Server Component (required for metadata export in Next.js).
 
+import { useEffect } from "react";
 import { AuthProvider } from "@/src/contexts/AuthContext";
 import { Toaster } from "react-hot-toast";
 
@@ -23,6 +24,29 @@ const TOASTER_CONFIG = {
 };
 
 export default function ClientProviders({ children }) {
+  useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      // Register the service worker after page loads to prevent blocking critical initial rendering resources
+      const registerServiceWorker = () => {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then((registration) => {
+            console.log("[PWA] Service Worker registered with scope:", registration.scope);
+          })
+          .catch((error) => {
+            console.error("[PWA] Service Worker registration failed:", error);
+          });
+      };
+
+      if (document.readyState === "complete") {
+        registerServiceWorker();
+      } else {
+        window.addEventListener("load", registerServiceWorker);
+        return () => window.removeEventListener("load", registerServiceWorker);
+      }
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Toaster {...TOASTER_CONFIG} />

@@ -4,8 +4,8 @@
   "description": "Smart coaching management — students, fees, attendance, tests and more.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f0f13",
-  "theme_color": "#6c63ff",
+  "background_color": "#06130d",
+  "theme_color": "#06130d",
   "orientation": "portrait-primary",
   "icons": [
     {
