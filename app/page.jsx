@@ -62,7 +62,7 @@ export default function HomePage() {
     }
   }, [user, profile, loading, router]);
 
-  if (loading) return <LoadingScreen />;
+  if (loading || (profile?.role && user)) return <LoadingScreen />;
 
   if (user && !profile) {
     return (

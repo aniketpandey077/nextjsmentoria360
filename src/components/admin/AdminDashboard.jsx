@@ -116,10 +116,12 @@ export default function AdminDashboard({ setActive }) {
 
   const loadData = async () => {
     try {
-      const c  = await getCoaching(profile.coachingId);
-      const jr = await getJoinRequests(profile.coachingId);
-      const f  = await getCoachingFees(profile.coachingId);
-      const tx = await getTransactions(profile.coachingId);
+      const [c, jr, f, tx] = await Promise.all([
+        getCoaching(profile.coachingId),
+        getJoinRequests(profile.coachingId),
+        getCoachingFees(profile.coachingId),
+        getTransactions(profile.coachingId),
+      ]);
       setCoaching(c);
       setRequests(jr.filter(r => r.status === "pending"));
       setFees(f);

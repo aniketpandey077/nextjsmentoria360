@@ -8,7 +8,7 @@
 
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth }       from "firebase/auth";
-import { getFirestore }  from "firebase/firestore";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, getFirestore } from "firebase/firestore";
 import { getStorage }    from "firebase/storage";
 
 const firebaseConfig = {
@@ -28,7 +28,21 @@ if (!firebaseConfig.authDomain) {
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 export const auth    = getAuth(app);
-export const db      = getFirestore(app);
+
+// Initialize Firestore with local cache enabled for offline access & faster startup
+let dbInstance;
+try {
+  dbInstance = initializeFirestore(app, {
+    localCache: persistentLocalCache({
+      tabManager: persistentMultipleTabManager(),
+    }),
+  });
+} catch (e) {
+  // If already initialized (e.g. Next.js hot reload), fallback to getFirestore
+  dbInstance = getFirestore(app);
+}
+
+export const db      = dbInstance;
 export const storage = getStorage(app);
 
 export default app;

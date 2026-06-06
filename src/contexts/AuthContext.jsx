@@ -46,10 +46,38 @@ function clearSessionCookies() {
 
 // ── Provider ──────────────────────────────────────────────────
 export function AuthProvider({ children }) {
-  const [user,         setUser]         = useState(null);
-  const [profile,      setProfile]      = useState(null);
+  const [user, setUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("m360_user");
+      try {
+        return saved ? JSON.parse(saved) : null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const [profile, setProfile] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("m360_profile");
+      try {
+        return saved ? JSON.parse(saved) : null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
   const [profileError, setProfileError] = useState(false);
-  const [loading,      setLoading]      = useState(true);
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedProfile = localStorage.getItem("m360_profile");
+      return !savedProfile;
+    }
+    return true;
+  });
 
   useEffect(() => {
     // Handle Google redirect result (mobile fallback)
@@ -57,16 +85,35 @@ export function AuthProvider({ children }) {
       if (result?.user) {
         const firebaseUser = result.user;
         setUser(firebaseUser);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("m360_user", JSON.stringify({
+            uid: firebaseUser.uid,
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email
+          }));
+        }
         try {
           setProfileError(false);
           let p = await getUserProfile(firebaseUser.uid);
           if (p) {
             setProfile(p);
+            if (typeof window !== "undefined") {
+              localStorage.setItem("m360_profile", JSON.stringify(p));
+            }
             await setSessionCookies(firebaseUser, p.role);
           } else {
             setProfile(null);
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("m360_profile");
+            }
           }
-        } catch { setProfileError(true); setProfile(null); }
+        } catch {
+          setProfileError(true);
+          setProfile(null);
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("m360_profile");
+          }
+        }
       }
     }).catch(() => {});
 
@@ -74,21 +121,44 @@ export function AuthProvider({ children }) {
       try {
         if (firebaseUser) {
           setUser(firebaseUser);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("m360_user", JSON.stringify({
+              uid: firebaseUser.uid,
+              displayName: firebaseUser.displayName,
+              email: firebaseUser.email
+            }));
+          }
           try {
             setProfileError(false);
             const p = await getUserProfile(firebaseUser.uid);
             setProfile(p);
-            // Refresh session cookie on each auth state change (handles page refresh)
-            if (p?.role) await setSessionCookies(firebaseUser, p.role);
+            if (p) {
+              if (typeof window !== "undefined") {
+                localStorage.setItem("m360_profile", JSON.stringify(p));
+              }
+              // Refresh session cookie on each auth state change (handles page refresh)
+              if (p?.role) await setSessionCookies(firebaseUser, p.role);
+            } else {
+              if (typeof window !== "undefined") {
+                localStorage.removeItem("m360_profile");
+              }
+            }
           } catch (profileErr) {
             console.error("Failed to load user profile:", profileErr);
             setProfileError(true);
             setProfile(null);
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("m360_profile");
+            }
           }
         } else {
           setUser(null);
           setProfile(null);
           setProfileError(false);
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("m360_user");
+            localStorage.removeItem("m360_profile");
+          }
           clearSessionCookies();
         }
       } catch (err) {
@@ -96,6 +166,10 @@ export function AuthProvider({ children }) {
         setUser(null);
         setProfile(null);
         setProfileError(false);
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("m360_user");
+          localStorage.removeItem("m360_profile");
+        }
       } finally {
         setLoading(false);
       }
@@ -120,6 +194,10 @@ export function AuthProvider({ children }) {
 
     await createUserProfile(cred.user.uid, profileData);
     setProfile(profileData);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("m360_profile", JSON.stringify(profileData));
+      localStorage.setItem("m360_user", JSON.stringify({ uid: cred.user.uid, displayName: name, email }));
+    }
     await setSessionCookies(cred.user, role);
     return cred.user;
   }
@@ -129,6 +207,10 @@ export function AuthProvider({ children }) {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     const p = await getUserProfile(cred.user.uid);
     setProfile(p);
+    if (typeof window !== "undefined") {
+      if (p) localStorage.setItem("m360_profile", JSON.stringify(p));
+      localStorage.setItem("m360_user", JSON.stringify({ uid: cred.user.uid, displayName: cred.user.displayName || "", email: cred.user.email }));
+    }
     if (p?.role) await setSessionCookies(cred.user, p.role);
     return cred.user;
   }
@@ -147,9 +229,17 @@ export function AuthProvider({ children }) {
       if (!p) {
         setUser(firebaseUser);
         setProfile(null);
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("m360_profile");
+          localStorage.setItem("m360_user", JSON.stringify({ uid: firebaseUser.uid, displayName: firebaseUser.displayName, email: firebaseUser.email }));
+        }
         return { user: firebaseUser, isNew: true };
       }
       setProfile(p);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("m360_profile", JSON.stringify(p));
+        localStorage.setItem("m360_user", JSON.stringify({ uid: firebaseUser.uid, displayName: firebaseUser.displayName, email: firebaseUser.email }));
+      }
       await setSessionCookies(firebaseUser, p.role);
       return { user: firebaseUser, isNew: false };
     } catch (err) {
@@ -184,6 +274,10 @@ export function AuthProvider({ children }) {
     };
     await createUserProfile(firebaseUser.uid, profileData);
     setProfile(profileData);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("m360_profile", JSON.stringify(profileData));
+      localStorage.setItem("m360_user", JSON.stringify({ uid: firebaseUser.uid, displayName: name || firebaseUser.displayName || "User", email: firebaseUser.email || "" }));
+    }
     await setSessionCookies(firebaseUser, role);
     return profileData;
   }
@@ -212,9 +306,17 @@ export function AuthProvider({ children }) {
     if (!p) {
       setUser(firebaseUser);
       setProfile(null);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("m360_profile");
+        localStorage.setItem("m360_user", JSON.stringify({ uid: firebaseUser.uid, displayName: firebaseUser.displayName, email: firebaseUser.email }));
+      }
       return { user: firebaseUser, isNew: true };
     }
     setProfile(p);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("m360_profile", JSON.stringify(p));
+      localStorage.setItem("m360_user", JSON.stringify({ uid: firebaseUser.uid, displayName: firebaseUser.displayName, email: firebaseUser.email }));
+    }
     await setSessionCookies(firebaseUser, p.role);
     return { user: firebaseUser, isNew: false };
   }
@@ -225,6 +327,10 @@ export function AuthProvider({ children }) {
     clearSessionCookies();
     setUser(null);
     setProfile(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("m360_profile");
+      localStorage.removeItem("m360_user");
+    }
   }
 
   // ── Refresh Profile ────────────────────────────────────────
@@ -234,11 +340,17 @@ export function AuthProvider({ children }) {
         setProfileError(false);
         const p = await getUserProfile(user.uid);
         setProfile(p);
+        if (typeof window !== "undefined" && p) {
+          localStorage.setItem("m360_profile", JSON.stringify(p));
+        }
         if (p?.role) await setSessionCookies(user, p.role);
         return p;
       } catch (err) {
         setProfileError(true);
         setProfile(null);
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("m360_profile");
+        }
         throw err;
       }
     }
