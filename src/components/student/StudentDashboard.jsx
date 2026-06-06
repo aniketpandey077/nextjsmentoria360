@@ -36,11 +36,44 @@ function StatCard({ icon, label, value, accent, iconBg, sub }) {
 export default function StudentDashboard({ setActive }) {
   const { profile, refreshProfile } = useAuth();
   const { coachings, activeCoachingId, setActiveCoachingId } = useStudentCoaching();
-  const [coaching, setCoaching] = useState(null);
-  const [fees, setFees] = useState([]);
-  const [classes, setClasses] = useState([]);
-  const [workshops, setWorkshops] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [coaching, setCoaching] = useState(() => {
+    if (typeof window !== "undefined" && activeCoachingId) {
+      const saved = localStorage.getItem(`m360_cache_coaching_${activeCoachingId}`);
+      try { return saved ? JSON.parse(saved) : null; } catch { return null; }
+    }
+    return null;
+  });
+  const [fees, setFees] = useState(() => {
+    if (typeof window !== "undefined" && activeCoachingId) {
+      const saved = localStorage.getItem(`m360_cache_fees_student_${activeCoachingId}_${profile?.uid}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [classes, setClasses] = useState(() => {
+    if (typeof window !== "undefined" && activeCoachingId) {
+      const saved = localStorage.getItem(`m360_cache_classes_${activeCoachingId}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [workshops, setWorkshops] = useState(() => {
+    if (typeof window !== "undefined" && activeCoachingId) {
+      const saved = localStorage.getItem(`m360_cache_workshops_${activeCoachingId}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const isPending = profile?.status === "pending" && (!profile?.coachingIds?.length);
+      if (isPending) return false;
+      if (!activeCoachingId) return false;
+      const hasCache = localStorage.getItem(`m360_cache_coaching_${activeCoachingId}`);
+      return !hasCache;
+    }
+    return true;
+  });
 
   const isIndependent = !profile?.status || profile?.status === "independent";
   const isPending     = profile?.status === "pending" && (!profile?.coachingIds?.length);
@@ -53,7 +86,10 @@ export default function StudentDashboard({ setActive }) {
       return () => clearInterval(interval);
     }
     if (!activeCoachingId) { setLoading(false); return; }
-    setLoading(true);
+    // Only set loading to true if we don't have cached data yet
+    if (typeof window !== "undefined" && !localStorage.getItem(`m360_cache_coaching_${activeCoachingId}`)) {
+      setLoading(true);
+    }
     (async () => {
       try {
         const [c, f, cl, w] = await Promise.all([
@@ -66,8 +102,21 @@ export default function StudentDashboard({ setActive }) {
         setFees(f);
         setClasses(cl);
         setWorkshops(w);
-      } catch { toast.error("Failed to load dashboard data."); }
-      finally   { setLoading(false); }
+
+        // Save to cache
+        if (typeof window !== "undefined") {
+          localStorage.setItem(`m360_cache_coaching_${activeCoachingId}`, JSON.stringify(c));
+          localStorage.setItem(`m360_cache_fees_student_${activeCoachingId}_${profile.uid}`, JSON.stringify(f));
+          localStorage.setItem(`m360_cache_classes_${activeCoachingId}`, JSON.stringify(cl));
+          localStorage.setItem(`m360_cache_workshops_${activeCoachingId}`, JSON.stringify(w));
+        }
+      } catch {
+        if (!coaching) {
+          toast.error("Failed to load dashboard data.");
+        }
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [activeCoachingId, profile?.status]);
 

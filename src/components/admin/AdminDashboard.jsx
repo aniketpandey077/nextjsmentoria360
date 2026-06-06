@@ -106,15 +106,55 @@ function StatCard({ icon, label, value, accent, iconBg, badge }) {
 /* ── Main Admin Dashboard ────────────────────────────────────── */
 export default function AdminDashboard({ setActive }) {
   const { profile } = useAuth();
-  const [coaching, setCoaching] = useState(null);
-  const [requests, setRequests] = useState([]);
-  const [fees, setFees] = useState([]);
-  const [transactions, setTransactions] = useState([]);
-  const [studentCount, setStudentCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [coaching, setCoaching] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`m360_cache_coaching_${profile?.coachingId}`);
+      try { return saved ? JSON.parse(saved) : null; } catch { return null; }
+    }
+    return null;
+  });
+  const [requests, setRequests] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`m360_cache_requests_${profile?.coachingId}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [fees, setFees] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`m360_cache_fees_${profile?.coachingId}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [transactions, setTransactions] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`m360_cache_transactions_${profile?.coachingId}`);
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [studentCount, setStudentCount] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`m360_cache_coaching_${profile?.coachingId}`);
+      try {
+        const c = saved ? JSON.parse(saved) : null;
+        return c?.students?.length || 0;
+      } catch { return 0; }
+    }
+    return 0;
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const hasCache = localStorage.getItem(`m360_cache_coaching_${profile?.coachingId}`);
+      return !hasCache;
+    }
+    return true;
+  });
   const [actingId, setActingId] = useState(null);
 
   const loadData = async () => {
+    if (!profile?.coachingId) return;
     try {
       const [c, jr, f, tx] = await Promise.all([
         getCoaching(profile.coachingId),
@@ -123,12 +163,24 @@ export default function AdminDashboard({ setActive }) {
         getTransactions(profile.coachingId),
       ]);
       setCoaching(c);
-      setRequests(jr.filter(r => r.status === "pending"));
+      const pendingRequests = jr.filter(r => r.status === "pending");
+      setRequests(pendingRequests);
       setFees(f);
-      setTransactions(tx.slice(0, 5));
+      const recentTransactions = tx.slice(0, 5);
+      setTransactions(recentTransactions);
       setStudentCount(c?.students?.length || 0);
+
+      // Save to localStorage cache for instant load next time
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`m360_cache_coaching_${profile.coachingId}`, JSON.stringify(c));
+        localStorage.setItem(`m360_cache_requests_${profile.coachingId}`, JSON.stringify(pendingRequests));
+        localStorage.setItem(`m360_cache_fees_${profile.coachingId}`, JSON.stringify(f));
+        localStorage.setItem(`m360_cache_transactions_${profile.coachingId}`, JSON.stringify(recentTransactions));
+      }
     } catch {
-      toast.error("Failed to load dashboard data.");
+      if (!coaching) {
+        toast.error("Failed to load dashboard data.");
+      }
     } finally {
       setLoading(false);
     }

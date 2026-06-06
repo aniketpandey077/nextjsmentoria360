@@ -182,21 +182,61 @@ function CoachingDetailPanel({ coaching, admin, onClose, onVisibilityChange }) {
 
 // ── Main Super Admin Dashboard ────────────────────────────────
 export default function SuperAdminDashboard({ active }) {
-  const [coachings, setCoachings] = useState([]);
-  const [users,     setUsers]     = useState([]);
-  const [tutors,    setTutors]    = useState([]);
-  const [loading,   setLoading]   = useState(true);
+  const [coachings, setCoachings] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("m360_cache_superadmin_coachings");
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [users, setUsers] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("m360_cache_superadmin_users");
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [tutors, setTutors] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("m360_cache_superadmin_tutors");
+      try { return saved ? JSON.parse(saved) : []; } catch { return []; }
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const hasCache = localStorage.getItem("m360_cache_superadmin_coachings");
+      return !hasCache;
+    }
+    return true;
+  });
   const [search,    setSearch]    = useState("");
   const [selected,  setSelected]  = useState(null); // coaching detail panel
 
   useEffect(() => {
     Promise.all([getAllCoachings(), getAllUsers()])
-      .then(([c, u]) => { setCoachings(c); setUsers(u); })
-      .catch(() => toast.error("Failed to load data — check Firestore rules."))
+      .then(([c, u]) => {
+        setCoachings(c);
+        setUsers(u);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("m360_cache_superadmin_coachings", JSON.stringify(c));
+          localStorage.setItem("m360_cache_superadmin_users", JSON.stringify(u));
+        }
+      })
+      .catch(() => {
+        if (coachings.length === 0) {
+          toast.error("Failed to load data — check Firestore rules.");
+        }
+      })
       .finally(() => setLoading(false));
 
     getAllTutors()
-      .then(t => setTutors(t))
+      .then(t => {
+        setTutors(t);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("m360_cache_superadmin_tutors", JSON.stringify(t));
+        }
+      })
       .catch(() => {});
   }, []);
 
